@@ -22,7 +22,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Profile-Name:</string>
+        <string>Profile name:</string>
        </property>
       </widget>
      </item>
@@ -32,7 +32,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Frequenz:</string>
+        <string>Frequency:</string>
        </property>
       </widget>
      </item>
@@ -81,7 +81,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Kanäle:</string>
+        <string>Channels:</string>
        </property>
       </widget>
      </item>
@@ -141,7 +141,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Qualität:</string>
+        <string>Quality</string>
        </property>
       </widget>
      </item>
@@ -152,6 +152,12 @@
        </property>
        <item>
         <widget class="QSlider" name="quality">
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="maximum">
           <number>9</number>
          </property>
@@ -183,8 +189,14 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
-          <string>hoch</string>
+          <string>high</string>
          </property>
         </widget>
        </item>
@@ -756,7 +768,7 @@
      <item>
       <widget class="QPushButton" name="ButtonCancel">
        <property name="text">
-        <string>Abbrechen</string>
+        <string>Cancel</string>
        </property>
        <property name="icon">
         <iconset resource="../../../resource.qrc">

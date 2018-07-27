@@ -212,13 +212,13 @@ bool EditPath::sanityCheck()
     // Source muss vorhanden sein
     if (conf.Source.size()==0) {
         QMessageBox::critical(NULL,tr("mp3encode"),
-            tr("Quellpfad muss angegeben werden"),
+            tr("Source directory is missing"),
             QMessageBox::Ok | QMessageBox::Default);
         return false;
     }
     if (!ppl7::File::statFile(conf.Source).isDir()) {
         QMessageBox::critical(this,tr("mp3encode"),
-            tr("Quellpfad ist ungültig oder existiert nicht"),
+            tr("Source directory is invalid or does not exist"),
             QMessageBox::Ok | QMessageBox::Default);
         return false;
     }
@@ -226,13 +226,13 @@ bool EditPath::sanityCheck()
     // Target muss vorhanden sein
     if (conf.Target.size()==0) {
         QMessageBox::critical(NULL,tr("mp3encode"),
-            tr("Zielpfad muss angegeben werden"),
+            tr("Target directory is missing"),
             QMessageBox::Ok | QMessageBox::Default);
         return false;
     }
     if (!ppl7::File::statFile(conf.Target).isDir()) {
         QMessageBox::critical(this,tr("mp3encode"),
-            tr("Zielpfad ist ungültig oder existiert nicht"),
+            tr("Target directory is invalid or does not exist"),
             QMessageBox::Ok | QMessageBox::Default);
         return false;
     }
@@ -241,13 +241,13 @@ bool EditPath::sanityCheck()
         // Backup-Pfad muss vorhanden sein
         if (conf.Backup.size()==0) {
             QMessageBox::critical(NULL,tr("mp3encode"),
-                tr("Backup-Pfad muss angegeben werden"),
+                tr("Backup directory is missing"),
                 QMessageBox::Ok | QMessageBox::Default);
             return false;
         }
         if (!ppl7::File::statFile(conf.Backup).isDir()) {
             QMessageBox::critical(this,tr("mp3encode"),
-                tr("Backup-Pfad ist ungültig oder existiert nicht"),
+                tr("Backup directory is invalid or does not exist"),
                 QMessageBox::Ok | QMessageBox::Default);
             return false;
         }
@@ -262,7 +262,7 @@ bool EditPath::sanityCheck()
     }
     if ((id==0 && dupecount>0) || dupecount>1) {		// Neuer Eintrag
         QMessageBox::critical(this,tr("mp3encode"),
-            tr("Quellpfad ist bereits vorhanden"),
+            tr("Source directory already exists"),
             QMessageBox::Ok | QMessageBox::Default);
         return false;
     }
@@ -340,7 +340,7 @@ void EditPath::on_ButtonCancel_clicked()
 
 void EditPath::on_SourcePathButton_clicked()
 {
-	QString dir = QFileDialog::getExistingDirectory(this, tr("Quell-Verzeichnis auswählen"),
+    QString dir = QFileDialog::getExistingDirectory(this, tr("choose source directory"),
 		ui.SourcePath->text(),
 		QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 	if(dir.length()) {
@@ -351,7 +351,7 @@ void EditPath::on_SourcePathButton_clicked()
 
 void EditPath::on_TargetPathButton_clicked()
 {
-	QString dir = QFileDialog::getExistingDirectory(this, tr("Ziel-Verzeichnis auswählen"),
+    QString dir = QFileDialog::getExistingDirectory(this, tr("choose target directory"),
 		ui.TargetPath->text(),
 		QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 	if(dir.length()) {
@@ -362,7 +362,7 @@ void EditPath::on_TargetPathButton_clicked()
 
 void EditPath::on_BackupPathButton_clicked()
 {
-	QString dir = QFileDialog::getExistingDirectory(this, tr("Backup-Verzeichnis auswählen"),
+    QString dir = QFileDialog::getExistingDirectory(this, tr("choose backup directory"),
 		ui.BackupPath->text(),
 		QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 	if(dir.length()) {

@@ -181,7 +181,7 @@ void EditId3Tag::on_saveButton_clicked()
         Tag.setPicture(3,bin,"image/jpeg");
         Tag.save();
     } catch (const ppl7::Exception &exp) {
-        QMessageBox::critical(NULL,"Error",exp.toString());
+        QMessageBox::critical(NULL,tr("Error"),exp.toString());
     }
     QApplication::restoreOverrideCursor();
 }

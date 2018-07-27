@@ -166,7 +166,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Anzahl Dateien in Pfaden:</string>
+           <string>Number of files in paths:</string>
           </property>
          </widget>
         </item>
@@ -204,7 +204,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Anzahl Dateien in manueller Queue:</string>
+           <string>Number of files in manual queue:</string>
           </property>
          </widget>
         </item>
@@ -262,7 +262,7 @@
            <bool>false</bool>
           </property>
           <property name="text">
-           <string>Quelle löschen</string>
+           <string>delete source file</string>
           </property>
          </widget>
         </item>
@@ -307,22 +307,22 @@
         </column>
         <column>
          <property name="text">
-          <string>Datei</string>
+          <string>File</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Länge</string>
+          <string>Length</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Fortschritt</string>
+          <string>Progress</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Zeit</string>
+          <string>Time</string>
          </property>
         </column>
         <column>
@@ -332,7 +332,7 @@
         </column>
         <column>
          <property name="text">
-          <string>Faktor</string>
+          <string>Rate</string>
          </property>
         </column>
         <column>
@@ -348,7 +348,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Erledigt</string>
+      <string>Done</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -379,22 +379,22 @@
         </property>
         <column>
          <property name="text">
-          <string>Datei</string>
+          <string>File</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Länge</string>
+          <string>Length</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Zeit</string>
+          <string>Time</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Faktor</string>
+          <string>Rate</string>
          </property>
         </column>
         <column>
@@ -409,7 +409,7 @@
         <item>
          <widget class="QPushButton" name="clearButton">
           <property name="text">
-           <string>löschen</string>
+           <string>delete</string>
           </property>
           <property name="icon">
            <iconset resource="../../../resource.qrc">

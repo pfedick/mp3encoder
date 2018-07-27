@@ -55,7 +55,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Frequenz:</string>
+            <string>Frequency:</string>
            </property>
           </widget>
          </item>
@@ -97,7 +97,7 @@
          <item row="1" column="0">
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Kanäle:</string>
+            <string>Channels:</string>
            </property>
           </widget>
          </item>
@@ -137,7 +137,7 @@
          <item row="2" column="0">
           <widget class="QLabel" name="label_5">
            <property name="text">
-            <string>Qualität:</string>
+            <string>Quality:</string>
            </property>
           </widget>
          </item>
@@ -175,7 +175,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>hoch</string>
+            <string>high</string>
            </property>
           </widget>
          </item>
@@ -759,7 +759,7 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Audio Profile</string>
+       <string>Audio profiles</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
@@ -802,7 +802,7 @@
          <item>
           <widget class="QPushButton" name="profileAddButton">
            <property name="text">
-            <string>Hinzufügen</string>
+            <string>Add</string>
            </property>
            <property name="icon">
             <iconset resource="../../../resource.qrc">
@@ -835,7 +835,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>editieren</string>
+            <string>Edit</string>
            </property>
            <property name="icon">
             <iconset resource="../../../resource.qrc">
@@ -874,7 +874,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>löschen</string>
+            <string>Delete</string>
            </property>
            <property name="icon">
             <iconset resource="../../../resource.qrc">
@@ -898,7 +898,7 @@
         <normaloff>:/images/resourcen/folder_orange.png</normaloff>:/images/resourcen/folder_orange.png</iconset>
       </attribute>
       <attribute name="title">
-       <string>Pfade</string>
+       <string>Paths</string>
       </attribute>
       <layout class="QVBoxLayout">
        <item>
@@ -928,12 +928,12 @@
            </property>
            <column>
             <property name="text">
-             <string>Quellpfad</string>
+             <string>Source path</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Zielpfad</string>
+             <string>Target path</string>
             </property>
            </column>
            <column>
@@ -943,7 +943,7 @@
            </column>
            <column>
             <property name="text">
-             <string>Einstellungen</string>
+             <string>Settings</string>
             </property>
            </column>
           </widget>
@@ -968,7 +968,7 @@
            <item>
             <widget class="QPushButton" name="ButtonAdd">
              <property name="text">
-              <string>Hinzufügen</string>
+              <string>Add</string>
              </property>
              <property name="icon">
               <iconset resource="../../../resource.qrc">
@@ -1001,7 +1001,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>editieren</string>
+              <string>Edit</string>
              </property>
              <property name="icon">
               <iconset resource="../../../resource.qrc">
@@ -1040,7 +1040,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>löschen</string>
+              <string>Delete</string>
              </property>
              <property name="icon">
               <iconset resource="../../../resource.qrc">
@@ -1066,7 +1066,7 @@
         <normaloff>:/images/resourcen/memory.png</normaloff>:/images/resourcen/memory.png</iconset>
       </attribute>
       <attribute name="title">
-       <string>Sonstiges</string>
+       <string>Other</string>
       </attribute>
       <layout class="QVBoxLayout">
        <item>
@@ -1091,7 +1091,7 @@
            <item>
             <widget class="QLabel" name="label">
              <property name="text">
-              <string>Anzahl CPUs:</string>
+              <string>Use number of CPUs:</string>
              </property>
             </widget>
            </item>
@@ -1108,18 +1108,18 @@
            <item>
             <widget class="QLabel" name="label_2">
              <property name="text">
-              <string>Priorität:</string>
+              <string>Priority:</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QComboBox" name="Priority">
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <item>
               <property name="text">
-               <string>niedrig</string>
+               <string>low</string>
               </property>
              </item>
              <item>
@@ -1129,7 +1129,7 @@
              </item>
              <item>
               <property name="text">
-               <string>hoch</string>
+               <string>high</string>
               </property>
              </item>
             </widget>
@@ -1152,14 +1152,14 @@
          <item>
           <widget class="QCheckBox" name="checkBoxAutoStart">
            <property name="text">
-            <string>Encoding bei Programmstart automatisch starten</string>
+            <string>Start encoder on program start</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QCheckBox" name="checkBoxRecode">
            <property name="text">
-            <string>MP3-Files im Quellverzeichnis recoden</string>
+            <string>recode files in source directory</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -1169,7 +1169,7 @@
          <item>
           <widget class="QCheckBox" name="checkBoxKeepTags">
            <property name="text">
-            <string>ID3-Tags übernehmen</string>
+            <string>keep ID3-Tags</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -1183,7 +1183,7 @@
          <item>
           <widget class="QLabel" name="label_6">
            <property name="text">
-            <string>Encoder-Verzögerung:</string>
+            <string>Encoder-Delay:</string>
            </property>
           </widget>
          </item>
@@ -1209,7 +1209,7 @@
          <item>
           <widget class="QLabel" name="label_7">
            <property name="text">
-            <string>Sekunden</string>
+            <string>seconds</string>
            </property>
           </widget>
          </item>
@@ -1298,7 +1298,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Übernehmen</string>
+        <string>Apply</string>
        </property>
        <property name="icon">
         <iconset resource="../../../resource.qrc">
@@ -1328,7 +1328,7 @@
      <item>
       <widget class="QPushButton" name="ButtonCancel">
        <property name="text">
-        <string>Abbrechen</string>
+        <string>Cancel</string>
        </property>
        <property name="icon">
         <iconset resource="../../../resource.qrc">

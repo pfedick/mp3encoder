@@ -113,10 +113,8 @@ void CMP3Core::CheckTodo(QTreeWidget *filequeue)
 		// Ist der Pfad aktiv?
 		if (!path.active) continue;
 		pattern=path.Source;
-		//printf ("Source: %s\n",(char*)pattern);
 		pattern.trimRight("/");
 		pattern+="/*.*";
-		//printf ("Pattern: %s\n",(char*)pattern);
 		try {
 			d.open(path.Source,d.SORT_FILENAME_IGNORCASE);
 			d.reset(dirIt);
