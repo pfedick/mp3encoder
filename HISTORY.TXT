@@ -1,0 +1,33 @@
+Patrick F.-Productions - MP3-Encoder
+=====================================
+
+Version 1.4.0 vom 26.07.2018
+  - Added ID3Tag-Editor
+  - Moved sourecode to https://github.com/pfedick/mp3encoder
+  
+Version 1.3.0 vom 24.07.2018
+  - Audio-Profile eingeführt
+  - MP3-Komprimierung per Drag'n'Drop 
+
+Version 1.2.0 vom 14.01.2018
+  - Vollständige Umstellung auf PPL7
+  - Config-Objekt statt AssocArray
+  
+Version 1.1.0
+  - Verwendung der Decoder-/Encoder-Klassen aus PPL7
+  - Unterstützung von AIFF-Files
+
+Version 1.0.2
+  - Backup-Möglichkeit: Statt das Originalfile nach dem Encoden zu löschen,
+    kann es nun stattdessen in ein Backup-Verzeichnis verschoben werden.
+  - Dekoder kann nun zwischen mad und mpg123 ausgewählt werden, sofern beides
+    von PPL6 unterstützt wird
+  - Anpassungen an ppl > 6.4.18
+
+Version 1.0.1 vom 24.08.2009		(CVS-Tag: REL_1_0_1)
+  - Update auf PPL 6.3.0
+  - Bugfix, bestehende ID3-Tags werden nun übernommen, wenn das Flag in den
+    Einstellungen gesetzt ist
+
+Version 1.0.0, Releasedate: 
+  - Erstrelease

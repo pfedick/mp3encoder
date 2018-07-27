@@ -1,0 +1,34 @@
+<RCC>
+    <qresource prefix="/icons" >
+        <file>resourcen/configure32.png</file>
+        <file>resourcen/kaudiocreator.png</file>
+        <file>resourcen/mp3encoder.png</file>
+        <file>resourcen/systemtray.png</file>
+    </qresource>
+    <qresource prefix="/images" >
+        <file>resourcen/2rightarrow.png</file>
+        <file>resourcen/add.png</file>
+        <file>resourcen/cancel.png</file>
+        <file>resourcen/cdaudio_unmount.png</file>
+        <file>resourcen/configure.png</file>
+        <file>resourcen/edit.png</file>
+        <file>resourcen/editcut.png</file>
+        <file>resourcen/editdelete.png</file>
+        <file>resourcen/emptytrash.png</file>
+        <file>resourcen/filenew.png</file>
+        <file>resourcen/fileopen.png</file>
+        <file>resourcen/filesave.png</file>
+        <file>resourcen/folder_orange.png</file>
+        <file>resourcen/kaudiocreator.png</file>
+        <file>resourcen/ksim_cpu.png</file>
+        <file>resourcen/memory.png</file>
+        <file>resourcen/multimedia.png</file>
+        <file>resourcen/multimedia16.png</file>
+        <file>resourcen/ok.png</file>
+        <file>resourcen/player_pause.png</file>
+        <file>resourcen/player_play.png</file>
+        <file>resourcen/player_stop.png</file>
+        <file>resourcen/viewmag.png</file>
+        <file>resourcen/window_new.png</file>
+    </qresource>
+</RCC>
