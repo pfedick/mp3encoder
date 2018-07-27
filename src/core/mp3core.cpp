@@ -39,6 +39,23 @@ CMP3Core::CMP3Core()
 	int p=(int)getpid();
     MyId.setf("%i_%i",p,(int)ppl7::rand(66666,99999999));
     newconf.load();
+    loadTranslation();
+}
+
+
+void CMP3Core::loadTranslation()
+{
+	/*
+	ppl7::String filename;
+	filename=":/translation/qt_"+newconf.language;
+	qtTranslator.load(filename);
+	app->installTranslator(&qtTranslator);
+	filename=":/translation/winmusik_"+conf.Locale;
+	if (!wmTranslator.load(filename)) {
+		//printf ("Übersetzung nicht geladen!\n");
+	}
+	app->installTranslator(&wmTranslator);
+	*/
 }
 
 const char *CMP3Core::GetMyId()

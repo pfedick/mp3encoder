@@ -1,11 +1,11 @@
 <RCC>
-    <qresource prefix="/icons" >
+    <qresource prefix="/icons">
         <file>resourcen/configure32.png</file>
         <file>resourcen/kaudiocreator.png</file>
         <file>resourcen/mp3encoder.png</file>
         <file>resourcen/systemtray.png</file>
     </qresource>
-    <qresource prefix="/images" >
+    <qresource prefix="/images">
         <file>resourcen/2rightarrow.png</file>
         <file>resourcen/add.png</file>
         <file>resourcen/cancel.png</file>
@@ -30,5 +30,9 @@
         <file>resourcen/player_stop.png</file>
         <file>resourcen/viewmag.png</file>
         <file>resourcen/window_new.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>mp3encode_de.qm</file>
+        <file>mp3encode_en.qm</file>
     </qresource>
 </RCC>

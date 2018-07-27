@@ -33,6 +33,7 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <QStatusBar>
+#include <QTranslator>
 #define WITH_QT
 #include <ppl7.h>
 #include <ppl7-audio.h>
@@ -95,6 +96,7 @@ class Config
 		bool	recode;
 		bool	keepID3;
 		int		EncoderDelay;
+		ppl7::String	language;
 		ppl7::Thread::Priority	priority;
 		Audio	audio_default;
 		std::list<PathConfig> pathconfig;
@@ -178,6 +180,10 @@ class CMP3Core
 		ppl7::ThreadPool Threads;
 		void stopEncoder();
         void addPayloadFromFileQueue(QTreeWidget *filequeue);
+        void loadTranslation();
+
+        QTranslator qtTranslator;
+        QTranslator mp3encodeTranslator;
 
 	public:
 		Config newconf;

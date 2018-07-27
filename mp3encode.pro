@@ -87,3 +87,6 @@ else {
 
 CODECFORSRC = UTF-8
 CODECFORTR = UTF-8
+
+TRANSLATIONS = mp3encode_de.ts \
+    mp3encode_en.ts

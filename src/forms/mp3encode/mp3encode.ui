@@ -117,7 +117,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>&amp;Queue</string>
+      <string>Queue</string>
      </property>
      <property name="flat">
       <bool>false</bool>

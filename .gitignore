@@ -2,3 +2,12 @@
 /MP3Encoder.creator
 /MP3Encoder.files
 /MP3Encoder.includes
+/ui_editaudioprofile.h
+/ui_editid3tag.h
+/ui_editpath.h
+/ui_mp3encode.h
+/ui_setup.h
+/release/
+/Makefile
+/Makefile.Debug
+/Makefile.Release

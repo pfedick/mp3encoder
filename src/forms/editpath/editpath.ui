@@ -107,7 +107,7 @@
      <item row="2" column="0">
       <widget class="QCheckBox" name="backupCheckBox">
        <property name="text">
-        <string>Backup</string>
+        <string>Backup:</string>
        </property>
       </widget>
      </item>
