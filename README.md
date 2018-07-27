@@ -5,4 +5,4 @@ Existing ID3-Tags are kept, but a simple ID3-Tag editor is also included.
 
 Mp3encoder comes with a graphical user interface based on Qt5 and PPLib7 and uses mpg123 for decoding and lame for encoding mp3 files.
 
-mp3encoder is written by Patrick Fedick <patrick@pfp.de>, http://www.pfp.de/
+mp3encoder is written by Patrick Fedick <patrick@pfp.de>, https://www.pfp.de/
