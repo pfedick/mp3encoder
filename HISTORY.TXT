@@ -1,7 +1,7 @@
 Patrick F.-Productions - MP3-Encoder
 ====================================
 
-Version 1.4.0 vom 28.07.2018
+Version 1.4.0 vom 28.07.2018 (Tag: REL_1_4_0)
   - Added ID3Tag-Editor
   - Moved sourecode to https://github.com/pfedick/mp3encoder
   - added translation: english and german
@@ -18,7 +18,7 @@ Version 1.1.0
   - Verwendung der Decoder-/Encoder-Klassen aus PPL7
   - Unterstützung von AIFF-Files
 
-Version 1.0.2
+Version 1.0.2 vom 11.02.2014
   - Backup-Möglichkeit: Statt das Originalfile nach dem Encoden zu löschen,
     kann es nun stattdessen in ein Backup-Verzeichnis verschoben werden.
   - Dekoder kann nun zwischen mad und mpg123 ausgewählt werden, sofern beides
