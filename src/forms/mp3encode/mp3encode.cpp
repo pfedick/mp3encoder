@@ -66,6 +66,14 @@ mp3encode::~mp3encode()
 
 }
 
+void mp3encode::changeEvent(QEvent* event)
+{
+    if (event->type()==QEvent::LanguageChange) {
+        ui.retranslateUi(this);
+    }
+}
+
+
 void mp3encode::updateAudioProfiles()
 {
     QString current=ui.audioProfileComboBox->currentText();
@@ -165,6 +173,7 @@ void mp3encode::on_setupButton_clicked()
         core->newconf=setup.getConfig();
         core->newconf.save();
         updateAudioProfiles();
+        core->loadTranslation();
     }
 }
 

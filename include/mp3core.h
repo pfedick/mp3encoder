@@ -89,6 +89,7 @@ class Config
 	private:
 		void loadPaths(QSettings &settings);
 		void savePaths(QSettings &settings) const;
+        static ppl7::String getSystemLang();
 
 	public:
 		int numCPUs;
@@ -180,7 +181,6 @@ class CMP3Core
 		ppl7::ThreadPool Threads;
 		void stopEncoder();
         void addPayloadFromFileQueue(QTreeWidget *filequeue);
-        void loadTranslation();
 
         QTranslator qtTranslator;
         QTranslator mp3encodeTranslator;
@@ -193,6 +193,7 @@ class CMP3Core
 		void InitWindow();
 		void SaveWindow(const char *name, const Rect &r);
 		Rect LoadWindow(const char *name);
+        void loadTranslation();
 
         void CheckTodo(QTreeWidget *filequeue);
 		void UpdateProgress(QTreeWidget *t);

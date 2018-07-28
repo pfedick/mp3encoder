@@ -20,6 +20,13 @@ EditAudioProfile::~EditAudioProfile()
     delete ui;
 }
 
+void EditAudioProfile::changeEvent(QEvent* event)
+{
+    if (event->type()==QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+}
+
 void EditAudioProfile::setConfig(const ppl7::String &name, const Config::Audio &audio)
 {
     ui->name->setText(name);

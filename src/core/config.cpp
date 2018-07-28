@@ -25,6 +25,7 @@
 
 
 #include <QSettings>
+#include <QLocale>
 #include "mp3core.h"
 
 Config::Audio::Audio()
@@ -158,10 +159,24 @@ Config::Config()
 	priority=ppl7::Thread::Priority::NORMAL;
 }
 
+ppl7::String Config::getSystemLang()
+{
+    QLocale locale=QLocale::system();
+    ppl7::String lang;
+    switch (locale.language()) {
+        case QLocale::German: lang="de"; break;
+        default: lang="en"; break;
+    }
+    return lang;
+}
+
 void Config::load()
 {
 	ppl7::String tmp;
 	QSettings settings("Patrick F.-Productions","mp3encode");
+    settings.beginGroup("global");
+    language=settings.value("language", Config::getSystemLang()).toString();
+    settings.endGroup();
 	settings.beginGroup("encoder");
 	numCPUs=settings.value("numCPUs",1).toInt();
 	EncoderDelay=settings.value("EncoderDelay",60).toInt();
@@ -196,6 +211,9 @@ void Config::load()
 void Config::save() const
 {
 	QSettings settings("Patrick F.-Productions","mp3encode");
+    settings.beginGroup("global");
+    settings.setValue("language",language);
+    settings.endGroup();
 	settings.beginGroup("encoder");
 	settings.setValue("numCPUs",numCPUs);
 	settings.setValue("EncoderDelay",EncoderDelay);

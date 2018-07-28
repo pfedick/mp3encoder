@@ -57,7 +57,7 @@ private:
 
     void InitPathList(const std::list<Config::PathConfig> &pathlist);
     void SwitchBitrateMode(const Config::Audio::EncoderMode b);
-
+    void changeEvent(QEvent* event);
 
 public:
     Setup(QWidget *parent = 0, CMP3Core *core=0);

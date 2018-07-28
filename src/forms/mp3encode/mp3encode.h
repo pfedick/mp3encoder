@@ -64,6 +64,7 @@ private:
 protected:
 	void closeEvent(QCloseEvent *event);
     bool eventFilter(QObject *target, QEvent *event);
+    void changeEvent(QEvent* event);
 
 private slots:
 	void on_setupButton_clicked();

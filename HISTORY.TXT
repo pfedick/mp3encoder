@@ -1,9 +1,10 @@
 Patrick F.-Productions - MP3-Encoder
-=====================================
+====================================
 
-Version 1.4.0 vom 26.07.2018
+Version 1.4.0 vom 28.07.2018
   - Added ID3Tag-Editor
   - Moved sourecode to https://github.com/pfedick/mp3encoder
+  - added translation: english and german
   
 Version 1.3.0 vom 24.07.2018
   - Audio-Profile eingeführt

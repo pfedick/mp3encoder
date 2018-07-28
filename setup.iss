@@ -49,7 +49,7 @@ WizardImageFile=resourcen\setup.bmp
 WizardSmallImageFile=resourcen\setup-icon.bmp
 LicenseFile=LICENSE.TXT
 PrivilegesRequired=none
-InfoBeforeFile=README.TXT
+InfoBeforeFile=README.md
 ArchitecturesAllowed=x64
 
 [Languages]

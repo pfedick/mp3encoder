@@ -26,6 +26,8 @@
 #include <QByteArray>
 #include <QDir>
 #include <QSettings>
+#include <QLocale>
+#include <QApplication>
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -45,17 +47,15 @@ CMP3Core::CMP3Core()
 
 void CMP3Core::loadTranslation()
 {
-	/*
-	ppl7::String filename;
-	filename=":/translation/qt_"+newconf.language;
-	qtTranslator.load(filename);
-	app->installTranslator(&qtTranslator);
-	filename=":/translation/winmusik_"+conf.Locale;
-	if (!wmTranslator.load(filename)) {
-		//printf ("Übersetzung nicht geladen!\n");
-	}
-	app->installTranslator(&wmTranslator);
-	*/
+    qApp->removeTranslator(&qtTranslator);
+    qApp->removeTranslator(&mp3encodeTranslator);
+    ppl7::String filename;
+    filename=":/locale/qt_"+newconf.language;
+    qtTranslator.load(filename);
+    qApp->installTranslator(&qtTranslator);
+    filename=":/locale/mp3encode_"+newconf.language;
+    mp3encodeTranslator.load(filename);
+    qApp->installTranslator(&mp3encodeTranslator);
 }
 
 const char *CMP3Core::GetMyId()

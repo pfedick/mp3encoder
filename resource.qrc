@@ -31,8 +31,10 @@
         <file>resourcen/viewmag.png</file>
         <file>resourcen/window_new.png</file>
     </qresource>
-    <qresource prefix="/">
+    <qresource prefix="/locale">
         <file>mp3encode_de.qm</file>
         <file>mp3encode_en.qm</file>
+        <file>qt_de.qm</file>
+        <file>qt_en.qm</file>
     </qresource>
 </RCC>

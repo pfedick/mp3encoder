@@ -32,6 +32,7 @@ private:
     bool handleDragEnterEvent(QDragEnterEvent *event);
     bool handleDropEvent(QDropEvent *event);
     void fillFormFromTag(const ppl7::ID3Tag &Tag);
+    void changeEvent(QEvent* event);
 
 private slots:
     void on_copyButton_clicked();

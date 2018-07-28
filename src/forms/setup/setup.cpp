@@ -79,6 +79,9 @@ Setup::Setup(QWidget *parent, CMP3Core *core)
 {
 	ui.setupUi(this);
     this->core=core;
+    ui.languageComboBox->addItem(tr("english"),"en");
+    ui.languageComboBox->addItem(tr("german"),"de");
+    QObject::connect(ui.languageComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(changed()));
 	QObject::connect(ui.EncoderDelay,SIGNAL(valueChanged(int)),this,SLOT(changed()));
 	QObject::connect(ui.frequency,SIGNAL(currentIndexChanged(int)),this,SLOT(changed()));
 	QObject::connect(ui.channels,SIGNAL(currentIndexChanged(int)),this,SLOT(changed()));
@@ -97,6 +100,13 @@ Setup::Setup(QWidget *parent, CMP3Core *core)
 Setup::~Setup()
 {
 
+}
+
+void Setup::changeEvent(QEvent* event)
+{
+    if (event->type()==QEvent::LanguageChange) {
+        ui.retranslateUi(this);
+    }
 }
 
 void Setup::changed()
@@ -224,6 +234,9 @@ void Setup::setConfig(const Config &conf)
 {
     int a;
     ppl7::String s;
+    a=ui.languageComboBox->findData(conf.language);
+    if (a<0) a=0;
+    ui.languageComboBox->setCurrentIndex(a);
 	ui.numCPUs->setValue(conf.numCPUs);
 	ui.EncoderDelay->setValue(conf.EncoderDelay);
 	ui.checkBoxAutoStart->setChecked(conf.autostart);
@@ -398,6 +411,7 @@ void Setup::on_quality_valueChanged(int i)
 Config Setup::getConfig() const
 {
 	Config conf;
+    conf.language=ui.languageComboBox->currentData().toString();
 	conf.numCPUs=ui.numCPUs->value();
 	conf.EncoderDelay=ui.EncoderDelay->value();
 	conf.autostart=ui.checkBoxAutoStart->isChecked();
@@ -483,8 +497,10 @@ void Setup::on_ButtonOK_clicked()
 
 void Setup::on_ButtonUse_clicked()
 {
-    // TODO
-    //if (Save()) ui.ButtonUse->setEnabled(false);
+    core->newconf=getConfig();
+    core->newconf.save();
+    core->loadTranslation();
+    ui.ButtonUse->setEnabled(false);
 }
 
 void Setup::on_ButtonCancel_clicked()

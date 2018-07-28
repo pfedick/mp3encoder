@@ -325,7 +325,7 @@
         <translation>Tag einfügen</translation>
     </message>
     <message>
-        <location filename="src/forms/editid3tag/editid3tag.cpp" line="184"/>
+        <location filename="src/forms/editid3tag/editid3tag.cpp" line="191"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
@@ -333,63 +333,63 @@
 <context>
     <name>EditPath</name>
     <message>
-        <location filename="src/forms/editpath/editpath.cpp" line="214"/>
-        <location filename="src/forms/editpath/editpath.cpp" line="220"/>
-        <location filename="src/forms/editpath/editpath.cpp" line="228"/>
-        <location filename="src/forms/editpath/editpath.cpp" line="234"/>
-        <location filename="src/forms/editpath/editpath.cpp" line="243"/>
-        <location filename="src/forms/editpath/editpath.cpp" line="249"/>
-        <location filename="src/forms/editpath/editpath.cpp" line="264"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="221"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="227"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="235"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="241"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="250"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="256"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="271"/>
         <source>mp3encode</source>
         <translation>mp3encode</translation>
     </message>
     <message>
-        <location filename="src/forms/editpath/editpath.cpp" line="215"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="222"/>
         <source>Source directory is missing</source>
         <translation>Quell-Verzeichnis ist nicht angegeben</translation>
     </message>
     <message>
-        <location filename="src/forms/editpath/editpath.cpp" line="221"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="228"/>
         <source>Source directory is invalid or does not exist</source>
         <translation>Quell-Verzeichnis nicht vorhanden oder ungültig</translation>
     </message>
     <message>
-        <location filename="src/forms/editpath/editpath.cpp" line="229"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="236"/>
         <source>Target directory is missing</source>
         <translation>Ziel-Verzeichnis nicht angegeben</translation>
     </message>
     <message>
-        <location filename="src/forms/editpath/editpath.cpp" line="235"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="242"/>
         <source>Target directory is invalid or does not exist</source>
         <translation>Ziel-Verzeichnis nicht vorhanden oder ungültig</translation>
     </message>
     <message>
-        <location filename="src/forms/editpath/editpath.cpp" line="244"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="251"/>
         <source>Backup directory is missing</source>
         <translation>Backup-Verzeichnis nicht angegeben</translation>
     </message>
     <message>
-        <location filename="src/forms/editpath/editpath.cpp" line="250"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="257"/>
         <source>Backup directory is invalid or does not exist</source>
         <translation>Backup-Verzeichnis nicht vorhanden oder ungültig</translation>
     </message>
     <message>
-        <location filename="src/forms/editpath/editpath.cpp" line="265"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="272"/>
         <source>Source directory already exists</source>
         <translation>Quell-Verzeichnis ist bereits vorhanden</translation>
     </message>
     <message>
-        <location filename="src/forms/editpath/editpath.cpp" line="343"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="350"/>
         <source>choose source directory</source>
         <translation>Quell-Verzeichnis auswählen</translation>
     </message>
     <message>
-        <location filename="src/forms/editpath/editpath.cpp" line="354"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="361"/>
         <source>choose target directory</source>
         <translation>Ziel-Verzeichnis auswählen</translation>
     </message>
     <message>
-        <location filename="src/forms/editpath/editpath.cpp" line="365"/>
+        <location filename="src/forms/editpath/editpath.cpp" line="372"/>
         <source>choose backup directory</source>
         <translation>Backup-Verzeichnis auswählen</translation>
     </message>
@@ -659,49 +659,62 @@
         <translation>inaktiv</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.cpp" line="360"/>
+        <location filename="src/forms/setup/setup.cpp" line="373"/>
         <source>extrem hoch</source>
         <translation>extrem hoch</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.cpp" line="363"/>
+        <location filename="src/forms/setup/setup.cpp" line="376"/>
         <source>sehr hoch</source>
         <translation>sehr hoch</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.cpp" line="366"/>
+        <location filename="src/forms/setup/setup.cpp" line="379"/>
         <source>hoch (empfohlen)</source>
         <translation>hoch (empfohlen)</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.cpp" line="370"/>
+        <location filename="src/forms/setup/setup.cpp" line="383"/>
         <source>gut</source>
         <translation>gut</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.cpp" line="373"/>
+        <location filename="src/forms/setup/setup.cpp" line="386"/>
         <source>gut (default)</source>
         <translation>gut (default)</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.cpp" line="377"/>
+        <location filename="src/forms/setup/setup.cpp" line="390"/>
         <source>durchschnitt</source>
         <translation>durchschnitt</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.cpp" line="380"/>
+        <location filename="src/forms/setup/setup.cpp" line="393"/>
         <source>schlecht</source>
         <translation>schlecht</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.cpp" line="383"/>
+        <location filename="src/forms/setup/setup.cpp" line="396"/>
         <source>sehr schlecht</source>
         <translation>sehr schlecht</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.cpp" line="386"/>
+        <location filename="src/forms/setup/setup.cpp" line="399"/>
         <source>normal</source>
         <translation>normal</translation>
+    </message>
+</context>
+<context>
+    <name>Setup</name>
+    <message>
+        <location filename="src/forms/setup/setup.cpp" line="82"/>
+        <source>english</source>
+        <translation>englisch</translation>
+    </message>
+    <message>
+        <location filename="src/forms/setup/setup.cpp" line="83"/>
+        <source>german</source>
+        <translation>deutsch</translation>
     </message>
 </context>
 <context>
@@ -768,7 +781,7 @@
     </message>
     <message>
         <location filename="src/forms/setup/setup.ui" line="178"/>
-        <location filename="src/forms/setup/setup.ui" line="1132"/>
+        <location filename="src/forms/setup/setup.ui" line="1162"/>
         <source>high</source>
         <translation>hoch</translation>
     </message>
@@ -984,62 +997,67 @@
         <translation>Verschiedenes</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1094"/>
+        <location filename="src/forms/setup/setup.ui" line="1097"/>
+        <source>Language:</source>
+        <translation>Sprache:</translation>
+    </message>
+    <message>
+        <location filename="src/forms/setup/setup.ui" line="1124"/>
         <source>Use number of CPUs:</source>
         <translation>Anzahl CPUs verwenden:</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1111"/>
+        <location filename="src/forms/setup/setup.ui" line="1141"/>
         <source>Priority:</source>
         <translation>Priorität:</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1122"/>
+        <location filename="src/forms/setup/setup.ui" line="1152"/>
         <source>low</source>
         <translation>niedrig</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1127"/>
+        <location filename="src/forms/setup/setup.ui" line="1157"/>
         <source>normal</source>
         <translation>normal</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1155"/>
+        <location filename="src/forms/setup/setup.ui" line="1185"/>
         <source>Start encoder on program start</source>
         <translation>Encoder bei Programmstart starten</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1162"/>
+        <location filename="src/forms/setup/setup.ui" line="1192"/>
         <source>recode files in source directory</source>
         <translation>Dateien im Quellverzeichnis neu kodieren</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1172"/>
+        <location filename="src/forms/setup/setup.ui" line="1202"/>
         <source>keep ID3-Tags</source>
         <translation>vorhadene ID3-Tags behalten</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1186"/>
+        <location filename="src/forms/setup/setup.ui" line="1216"/>
         <source>Encoder-Delay:</source>
         <translation>Encoder-Verzögerung:</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1212"/>
+        <location filename="src/forms/setup/setup.ui" line="1242"/>
         <source>seconds</source>
         <translation>Sekunden</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1268"/>
+        <location filename="src/forms/setup/setup.ui" line="1298"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1301"/>
+        <location filename="src/forms/setup/setup.ui" line="1331"/>
         <source>Apply</source>
         <translation>Übernehmen</translation>
     </message>
     <message>
-        <location filename="src/forms/setup/setup.ui" line="1331"/>
+        <location filename="src/forms/setup/setup.ui" line="1361"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>

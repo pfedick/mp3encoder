@@ -48,6 +48,7 @@ private:
     Ui::EditPathClass ui;
     void SwitchBitrateMode(const Config::Audio::EncoderMode b);
     bool sanityCheck();
+    void changeEvent(QEvent* event);
 
 private slots:
 	void on_ButtonOK_clicked();

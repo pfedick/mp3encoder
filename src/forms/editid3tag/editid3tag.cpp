@@ -30,6 +30,13 @@ EditId3Tag::~EditId3Tag()
     delete ui;
 }
 
+void EditId3Tag::changeEvent(QEvent* event)
+{
+    if (event->type()==QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+}
+
 
 bool EditId3Tag::eventFilter(QObject *target, QEvent *event)
 {
