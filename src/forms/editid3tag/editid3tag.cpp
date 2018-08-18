@@ -37,7 +37,6 @@ void EditId3Tag::changeEvent(QEvent* event)
     }
 }
 
-
 bool EditId3Tag::eventFilter(QObject *target, QEvent *event)
 {
     int type=event->type();
@@ -171,6 +170,7 @@ void EditId3Tag::on_saveButton_clicked()
     try {
         ppl7::ID3Tag Tag;
         Tag.load(file);
+        if (ui->deleteOtherTagsCheckBox->isChecked()) Tag.clearTags();
         Tag.setArtist(ui->interpret->text().trimmed());
         Tag.setTitle(ui->titel->text().trimmed());
         Tag.setGenre(ui->genre->text().trimmed());
@@ -188,7 +188,7 @@ void EditId3Tag::on_saveButton_clicked()
         Tag.setPicture(3,bin,"image/jpeg");
         Tag.save();
     } catch (const ppl7::Exception &exp) {
-        QMessageBox::critical(NULL,tr("Error"),exp.toString());
+        QMessageBox::critical(NULL,"Error",exp.toString());
     }
     QApplication::restoreOverrideCursor();
 }
@@ -210,3 +210,18 @@ void EditId3Tag::on_coverFromClipboardButton_clicked()
     QApplication::restoreOverrideCursor();
 }
 
+void EditId3Tag::on_deleteButton_clicked()
+{
+	ppl7::String file=ui->filename->text();
+	//if (!ppl7::File::exists(file)) return;
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+	try {
+        ppl7::ID3Tag Tag;
+        Tag.load(file);
+        Tag.clearTags();
+        Tag.save();
+	} catch (const ppl7::Exception &exp) {
+		QMessageBox::critical(NULL,"Error",exp.toString());
+	}
+	QApplication::restoreOverrideCursor();
+}
