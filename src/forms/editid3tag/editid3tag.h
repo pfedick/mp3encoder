@@ -41,6 +41,7 @@ private slots:
     void on_delCoverButton_clicked();
     void on_coverFromClipboardButton_clicked();
     void on_reloadButton_clicked();
+    void on_deleteButton_clicked();
 
 };
 
