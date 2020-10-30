@@ -118,7 +118,7 @@ void CMP3Core::CheckTodo(QTreeWidget *filequeue)
 	ppl7::Dir::Iterator dirIt;
 	ppl7::DirEntry entry;
 	ppl7::String pattern;
-	ppluint64 highest,now;
+	uint64_t highest,now;
     highest=now=ppl7::GetTime();
 	highest+=1000;
 	int count=0;
