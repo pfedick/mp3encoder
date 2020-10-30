@@ -30,7 +30,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{638EF93F-6684-4862-A922-095F672C0AD6}}
 AppName=PFP MP3Encoder
-AppVerName=PFP MP3Encoder 1.3.0
+AppVerName=PFP MP3Encoder 1.5.0
 AppCopyright=Copyright (C) 2018 Patrick Fedick
 AppVersion=1.3.0
 AppPublisher=Patrick F.-Productions
@@ -41,7 +41,7 @@ DefaultDirName={pf}\Patrick F.-Productions\MP3Encoder
 DefaultGroupName=Patrick F.-Productions
 AllowNoIcons=yes
 OutputDir=distfiles
-OutputBaseFilename=PFP-MP3Encoder-1.2.0-Setup
+OutputBaseFilename=PFP-MP3Encoder-1.5.0-Setup
 SetupIconFile=resourcen\\mp3encoder.ico
 Compression=lzma/ultra64
 SolidCompression=yes
@@ -74,15 +74,14 @@ Source: "C:/msys64/mingw64/bin/libglib-2.0-0.dll"; DestDir: "{app}"; Flags: igno
 Source: "C:/msys64/mingw64/bin/libgraphite2.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "C:/msys64/mingw64/bin/libharfbuzz-0.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "C:/msys64/mingw64/bin/libiconv-2.dll"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "C:/msys64/mingw64/bin/libicudt61.dll"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "C:/msys64/mingw64/bin/libicuin61.dll"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "C:/msys64/mingw64/bin/libicuuc61.dll"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "C:/msys64/mingw64/bin/libicudt67.dll"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "C:/msys64/mingw64/bin/libicuin67.dll"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "C:/msys64/mingw64/bin/libicuuc67.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "C:/msys64/mingw64/bin/libintl-8.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "C:/msys64/mingw64/bin/libmp3lame-0.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "C:/msys64/mingw64/bin/libmpg123-0.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "C:/msys64/mingw64/bin/libpcre-1.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "C:/msys64/mingw64/bin/libpcre2-16-0.dll"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "C:/msys64/mingw64/bin/libpng16-16.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "C:/msys64/mingw64/bin/libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "C:/msys64/mingw64/bin/libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "C:/msys64/mingw64/bin/zlib1.dll"; DestDir: "{app}"; Flags: ignoreversion;

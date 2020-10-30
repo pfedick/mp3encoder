@@ -1,6 +1,9 @@
 Patrick F.-Productions - MP3-Encoder
 ====================================
 
+Version 1.5.0 vom 30.10.2020 (Tag: REL_1_5_0)
+  - Fixed Encoding of Files with non US-ASCII characters in filename
+
 Version 1.4.0 vom 28.07.2018 (Tag: REL_1_4_0)
   - Added ID3Tag-Editor
   - Moved sourecode to https://github.com/pfedick/mp3encoder
