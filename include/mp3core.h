@@ -124,7 +124,7 @@ class CMP3Thread : public ppl7::Thread
 		CMP3Core *core;
 		ppl7::DirEntry dir;
 		ppl7::String Filename;
-		ppl7::String SourceFile, TargetFile, EndFile, OriginalFile;
+		ppl7::String TargetFile, EndFile, OriginalFile;
 		ppl7::String Backup;
         Config::PathConfig config;
 		ppl7::File ss,zz;

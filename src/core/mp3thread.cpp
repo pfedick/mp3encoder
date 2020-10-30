@@ -43,8 +43,6 @@ CMP3Thread::~CMP3Thread()
 {
 	if (!bFinished) {
 		if(bFileRenamed) {
-			// File muss wieder zurück umbenannt werden
-			ppl7::File::rename(SourceFile, OriginalFile);
 			// Bisher encodetes File muss gelöscht werden
 			ppl7::File::remove(TargetFile);
 		}
@@ -127,17 +125,15 @@ int CMP3Thread::LockFile()
 	//printf ("tmpfile: %s\n",(char*)tmpfile);
 
 	OriginalFile=dir.File;
-	// Temporaere Dateinamen erstellen
-    SourceFile.setf("%s/%s.%s.src.enc",(const char*)Source,(const char*)Filename,myid);
     TargetFile.setf("%s/%s.mp3.%s.tgt.enc",(const char*)Target,(const char*)tmpfile,myid);
 	EndFile.setf("%s/%s.mp3",(const char*)Target,(const char*)tmpfile);
 
-	/*
-	printf ("OriginalFile: %s\n",(const char*)OriginalFile);
-	printf ("EndFile: %s\n",(const char*)EndFile);
-	printf ("SourceFile: %s\n",(const char*)SourceFile);
-	printf ("TargetFile: %s\n",(const char*)TargetFile);
-	*/
+
+	//printf ("OriginalFile: %ls\n",(const wchar_t*)ppl7::WideString(OriginalFile));
+	//printf ("EndFile: %ls\n",(const wchar_t*)ppl7::WideString(EndFile));
+	//printf ("TargetFile: %ls\n",(const wchar_t*)ppl7::WideString(TargetFile));
+	//fflush(stdout);
+
 
 	// Kann die Zieldatei geöffnet werden?
 	try {
@@ -146,18 +142,9 @@ int CMP3Thread::LockFile()
 		return 0;
 	}
 
-	// Wir versuchen das File umzubenennen
+	// Quellfile öffnen
 	try {
-		ppl7::File::rename(OriginalFile,SourceFile);
-	} catch (...) {
-		zz.close();
-		ppl7::File::remove(TargetFile);
-		return 0;
-	}
-
-	// Wenn wir es jetzt öffnen können, war das Umbenennen erfolgreich
-	try {
-		ss.open(SourceFile,ppl7::File::READ);
+		ss.open(OriginalFile,ppl7::File::READ);
 	} catch (...) {
 		zz.close();
 		ppl7::File::remove(TargetFile);
@@ -188,23 +175,24 @@ void CMP3Thread::run()
 	ss.close();
 	if (ret) {		// Erfolgreich beendet
 		try {
-			ppl7::File::rename(TargetFile,EndFile);
 			// Löschen oder Backup?
 			if (config.enable_backup) {
 				ppl7::String BackupFile=config.Backup;
 				BackupFile+="/"+ppl7::File::getFilename(OriginalFile);
 				try {
-					ppl7::File::move(SourceFile,BackupFile);
+					ppl7::File::move(OriginalFile,BackupFile);
 				} catch (...) {
-					ppl7::File::copy(SourceFile,BackupFile);
-					ppl7::File::remove(SourceFile);
+					ppl7::File::copy(OriginalFile,BackupFile);
+					ppl7::File::remove(OriginalFile);
 				}
 			} else {
-				ppl7::File::remove(SourceFile);
+				ppl7::File::remove(OriginalFile);
 			}
+			ppl7::File::rename(TargetFile,EndFile);
 			bFinished=true;
-		} catch (...) {
-
+		} catch (const ppl7::Exception &exp) {
+			printf("ERROR CMP3Thread::run => %s\n", (const char*)exp.toString());
+			fflush(stdout);
 		}
 
 	}
@@ -273,7 +261,9 @@ void CMP3Thread::encode()
 		encoder.encode(*decoder);
 		encoder.finish();
 		if (info.HaveID3v2Tag) {
-			encoder.writeID3v1Tag(Tag);
+			try {
+				encoder.writeID3v1Tag(Tag);
+			} catch (...) {}
 		}
 	} catch (...) {
         delete decoder;

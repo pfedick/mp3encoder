@@ -194,12 +194,20 @@ void CMP3Core::addPayloadFromFileQueue(QTreeWidget *filequeue)
 {
     QueueTreeWidgetItem *item=(QueueTreeWidgetItem*)filequeue->topLevelItem(0);
     ppl7::DirEntry dir;
-    ppl7::File::statFile(item->Filename, dir);
-    if (!dir.isFile()) {
-        item=(QueueTreeWidgetItem*)filequeue->takeTopLevelItem(0);
-        delete (item);
-        Mutex.unlock();
-        return;
+    try {
+		ppl7::File::statFile(item->Filename, dir);
+		if (!dir.isFile()) {
+			item=(QueueTreeWidgetItem*)filequeue->takeTopLevelItem(0);
+			delete (item);
+			Mutex.unlock();
+			return;
+		}
+    } catch (...) {
+    	printf("DEBUG File::statFile: %ls\n",(const wchar_t*)ppl7::WideString(item->Filename));
+    	item=(QueueTreeWidgetItem*)filequeue->takeTopLevelItem(0);
+		delete (item);
+		Mutex.unlock();
+		return;
     }
     Config::PathConfig path_conf;
     path_conf.audio_override=false;
