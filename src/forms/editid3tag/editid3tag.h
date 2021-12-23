@@ -8,6 +8,7 @@
 #include <QMimeData>
 
 #define WITH_QT
+#define PPL_QT_STRING_UTF8
 #include <ppl7.h>
 #include <ppl7-audio.h>
 

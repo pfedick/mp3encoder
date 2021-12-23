@@ -1,6 +1,7 @@
 #include "editid3tag.h"
 #include "ui_editid3tag.h"
 #define WITH_QT
+#define PPL_QT_STRING_UTF8
 #include <ppl7.h>
 #include <ppl7-audio.h>
 #include <QPixmap>
