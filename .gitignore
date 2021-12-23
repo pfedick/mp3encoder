@@ -17,3 +17,5 @@
 /build/
 /debug/
 /distfiles/
+/object_script.mp3encode.Debug
+/object_script.mp3encode.Release
