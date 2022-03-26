@@ -19,7 +19,7 @@ EditId3Tag::EditId3Tag(QWidget *parent) :
     ui(new Ui::EditId3Tag)
 {
     ui->setupUi(this);
-
+    Clipboard.setLocalCharset("UTF-8");
     ui->filename->installEventFilter(this);
     ui->tagsGroupBox->installEventFilter(this);
     ui->insertButton->setEnabled(true);
@@ -97,9 +97,11 @@ bool EditId3Tag::handleDropEvent(QDropEvent *event)
     ui->filename->setText(file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
     ppl7::ID3Tag Tag;
+    Tag.setLocalCharset("UTF-8");
     //if (ppl7::File::exists(file)) {
         try {
             Tag.load(file);
+            //Tag.listFrames(false);
             fillFormFromTag(Tag);
         } catch (const ppl7::Exception &exp) {
             QMessageBox::critical(NULL,"Error",exp.toString());
@@ -155,6 +157,7 @@ void EditId3Tag::on_reloadButton_clicked()
     QApplication::setOverrideCursor(Qt::WaitCursor);
     ppl7::ID3Tag Tag;
     try {
+        Tag.setLocalCharset("UTF-8");
         Tag.load(file);
         fillFormFromTag(Tag);
     }  catch (const ppl7::Exception &exp) {
@@ -170,6 +173,7 @@ void EditId3Tag::on_saveButton_clicked()
     QApplication::setOverrideCursor(Qt::WaitCursor);
     try {
         ppl7::ID3Tag Tag;
+        Tag.setLocalCharset("UTF-8");
         Tag.load(file);
         if (ui->deleteOtherTagsCheckBox->isChecked()) Tag.clearTags();
         Tag.setArtist(ui->interpret->text().trimmed());
@@ -218,6 +222,7 @@ void EditId3Tag::on_deleteButton_clicked()
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	try {
         ppl7::ID3Tag Tag;
+        Tag.setLocalCharset("UTF-8");
         Tag.load(file);
         Tag.clearTags();
         Tag.save();
