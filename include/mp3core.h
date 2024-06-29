@@ -35,6 +35,7 @@
 #include <QStatusBar>
 #include <QTranslator>
 #define WITH_QT
+#define PPL_WITH_QT6
 #define PPL_QT_STRING_UTF8
 #include <ppl7.h>
 #include <ppl7-audio.h>
@@ -49,170 +50,169 @@ class CMP3Core;
 
 class Config
 {
+public:
+	class Audio
+	{
 	public:
-		class Audio
-		{
-			public:
-			enum EncoderMode {
-				CBR,
-				ABR,
-				VBR
-			};
-			Audio();
-			int				frequency;
-			int				quality;
-			ppl7::AudioInfo::ChannelMode	channel_mode;
-			EncoderMode		mode;
-			int				cbr_bitrate;
-			int				abr_bitrate;
-			int				vbr_min_bitrate;
-			int				vbr_max_bitrate;
-			void			load(QSettings &settings);
-			void			save(QSettings &settings) const;
+		enum EncoderMode {
+			CBR,
+			ABR,
+			VBR
 		};
-		class PathConfig
-		{
-			public:
-				ppl7::String	Source;
-				ppl7::String	Target;
-				ppl7::String	Backup;
-				bool	active;
-				bool	audio_override;
-				bool	enable_backup;
-				Audio	audio;
-				PathConfig();
-				void load(QSettings &settings);
-				void save(QSettings &settings) const;
-
-		};
-
-
-	private:
-		void loadPaths(QSettings &settings);
-		void savePaths(QSettings &settings) const;
-        static ppl7::String getSystemLang();
-
+		Audio();
+		int				frequency;
+		int				quality;
+		ppl7::AudioInfo::ChannelMode	channel_mode;
+		EncoderMode		mode;
+		int				cbr_bitrate;
+		int				abr_bitrate;
+		int				vbr_min_bitrate;
+		int				vbr_max_bitrate;
+		void			load(QSettings& settings);
+		void			save(QSettings& settings) const;
+	};
+	class PathConfig
+	{
 	public:
-		int numCPUs;
-		bool	autostart;
-		bool	recode;
-		bool	keepID3;
-		int		EncoderDelay;
-		ppl7::String	language;
-		ppl7::Thread::Priority	priority;
-		Audio	audio_default;
-		std::list<PathConfig> pathconfig;
-        std::map<ppl7::String,Audio> audioprofiles;
+		ppl7::String	Source;
+		ppl7::String	Target;
+		ppl7::String	Backup;
+		bool	active;
+		bool	audio_override;
+		bool	enable_backup;
+		Audio	audio;
+		PathConfig();
+		void load(QSettings& settings);
+		void save(QSettings& settings) const;
 
-	public:
-		Config();
-		void	load();
-		void	save() const;
-        void    setCurrentProfile(const QString &name);
-        QString getCurrentProfile();
+	};
+
+
+private:
+	void loadPaths(QSettings& settings);
+	void savePaths(QSettings& settings) const;
+	static ppl7::String getSystemLang();
+
+public:
+	int numCPUs;
+	bool	autostart;
+	bool	recode;
+	bool	keepID3;
+	int		EncoderDelay;
+	ppl7::String	language;
+	ppl7::Thread::Priority	priority;
+	Audio	audio_default;
+	std::list<PathConfig> pathconfig;
+	std::map<ppl7::String, Audio> audioprofiles;
+
+public:
+	Config();
+	void	load();
+	void	save() const;
+	void    setCurrentProfile(const QString& name);
+	QString getCurrentProfile();
 
 };
 
 class CMP3Thread : public ppl7::Thread
 {
 	//friend class CMP3Core;
-	private:
-		ppl7::AudioEncoder_MP3 encoder;
-		bool	bFileRenamed;
-		bool	bFinished;
-		bool	running;
-		CMP3Core *core;
-		ppl7::DirEntry dir;
-		ppl7::String Filename;
-		ppl7::String TargetFile, EndFile, OriginalFile;
-		ppl7::String Backup;
-        Config::PathConfig config;
-		ppl7::File ss,zz;
-		double startTime;
-		ppl7::AudioDecoder *getDecoder(const ppl7::AudioInfo &info);
+private:
+	ppl7::AudioEncoder_MP3 encoder;
+	bool	bFileRenamed;
+	bool	bFinished;
+	bool	running;
+	CMP3Core* core;
+	ppl7::DirEntry dir;
+	ppl7::String Filename;
+	ppl7::String TargetFile, EndFile, OriginalFile;
+	ppl7::String Backup;
+	Config::PathConfig config;
+	ppl7::File ss, zz;
+	double startTime;
+	ppl7::AudioDecoder* getDecoder(const ppl7::AudioInfo& info);
 
-		float	progress, faktor;
-		int	length;
-		int	time,rest;
+	float	progress, faktor;
+	int	length;
+	int	time, rest;
 
-	public:
-		CMP3Thread(CMP3Core *core);
-		~CMP3Thread();
-		void setConfig(const Config::Audio &default_audio, const Config::PathConfig &path);
-		void setDirEntry(const ppl7::DirEntry &dir);
-		const Config::PathConfig &getConfig() const;
-		float getFactor() const;
-		int getLength() const;
-		int getTime() const;
-		int getRest() const;
-		float getProgress() const;
-		const ppl7::String &getFilename() const;
-		bool isRunning() const;
+public:
+	CMP3Thread(CMP3Core* core);
+	~CMP3Thread();
+	void setConfig(const Config::Audio& default_audio, const Config::PathConfig& path);
+	void setDirEntry(const ppl7::DirEntry& dir);
+	const Config::PathConfig& getConfig() const;
+	float getFactor() const;
+	int getLength() const;
+	int getTime() const;
+	int getRest() const;
+	float getProgress() const;
+	const ppl7::String& getFilename() const;
+	bool isRunning() const;
 
-		void stopEncode();
+	void stopEncode();
 
-		int LockFile();
-		virtual void run();
-		void	initMp3Encoder(ppl7::AudioEncoder_MP3 &encoder);
-		void	encode();
-		void	updateProgress(int progress);
+	int LockFile();
+	virtual void run();
+	void	initMp3Encoder(ppl7::AudioEncoder_MP3& encoder);
+	void	encode();
+	void	updateProgress(int progress);
 };
 
 class Rect
 {
-	public:
-		int left;
-		int top;
-		int width;
-		int height;
+public:
+	int left;
+	int top;
+	int width;
+	int height;
 };
 
 class QueueTreeWidgetItem : public QTreeWidgetItem
 {
-    public:
-        ppl7::String Filename;
-        Config::Audio audio;
+public:
+	ppl7::String Filename;
+	Config::Audio audio;
 };
 
 class CMP3Core
 {
-	private:
-		ppl7::Mutex Mutex;
-		ppl7::String MyId;
-		ppl7::ThreadPool Threads;
-		void stopEncoder();
-        void addPayloadFromFileQueue(QTreeWidget *filequeue);
+private:
+	ppl7::Mutex Mutex;
+	ppl7::String MyId;
+	ppl7::ThreadPool Threads;
+	void stopEncoder();
+	void addPayloadFromFileQueue(QTreeWidget* filequeue);
 
-        QTranslator qtTranslator;
-        QTranslator mp3encodeTranslator;
+	QTranslator qtTranslator;
+	QTranslator mp3encodeTranslator;
 
-	public:
-		Config newconf;
-		int numFiles;
+public:
+	Config newconf;
+	int numFiles;
 
-		CMP3Core();
-		void InitWindow();
-		void SaveWindow(const char *name, const Rect &r);
-		Rect LoadWindow(const char *name);
-        void loadTranslation();
+	CMP3Core();
+	void InitWindow();
+	void SaveWindow(const char* name, const Rect& r);
+	Rect LoadWindow(const char* name);
+	void loadTranslation();
 
-        void CheckTodo(QTreeWidget *filequeue);
-		void UpdateProgress(QTreeWidget *t);
-		void Pause();
-		void Continue();
-		void Stop();
-		void FinishThreads(QTreeWidget *t=NULL);
-		const char *GetMyId();
+	void CheckTodo(QTreeWidget* filequeue);
+	void UpdateProgress(QTreeWidget* t);
+	void Pause();
+	void Continue();
+	void Stop();
+	void FinishThreads(QTreeWidget* t=NULL);
+	const char* GetMyId();
 
-        bool isFileSupported(const ppl7::String &filename);
+	bool isFileSupported(const ppl7::String& filename);
 };
 
-void TranslateEncoding(const Config::Audio &conf, ppl7::String &s);
-ppl7::String TranslateEncoding(const Config::Audio &conf);
+void TranslateEncoding(const Config::Audio& conf, ppl7::String& s);
+ppl7::String TranslateEncoding(const Config::Audio& conf);
 
-void SetBitrate(QComboBox *q, int bitrate);
-int GetBitrate(QComboBox *q);
+void SetBitrate(QComboBox* q, int bitrate);
+int GetBitrate(QComboBox* q);
 QString GetQualityLabel(int i);
 
 #endif
-
