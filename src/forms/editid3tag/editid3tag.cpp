@@ -21,11 +21,10 @@
 
 #include "editid3tag.h"
 #include "ui_editid3tag.h"
-#define WITH_QT
-#define PPL_WITH_QT6
-#define PPL_QT_STRING_UTF8
-#include <pplib.h>
-#include <pplib-audio.h>
+#include <pplib/audio/audioinfo.h>
+#include <pplib/audio/id3tag.h>
+#include <pplib/types/bytearray.h>
+#include <pplib/types/string.h>
 #include <QPixmap>
 #include <QBuffer>
 #include <QClipboard>

@@ -29,12 +29,8 @@
 int main(int argc, char* argv[])
 {
     setlocale(LC_ALL, "");
-    pplib::String::setGlobalEncoding("UTF-8");
+    // pplib8 verwendet intern UTF-8, eine globale Kodierung muss nicht mehr gesetzt werden.
     QApplication a(argc, argv);
-#if QT_VERSION < 0x050000
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-#endif
     CMP3Core Core;
     mp3encode w(&Core);
     w.InitWindow();

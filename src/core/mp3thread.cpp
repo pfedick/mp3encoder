@@ -130,7 +130,7 @@ int CMP3Thread::LockFile()
 
     // Kann die Zieldatei geöffnet werden?
     try {
-        zz.open(TargetFile, pplib::File::WRITE);
+        zz.open(TargetFile, pplib::File::FileMode::WRITE);
     }
     catch (...) {
         return 0;
@@ -138,7 +138,7 @@ int CMP3Thread::LockFile()
 
     // Quellfile öffnen
     try {
-        ss.open(OriginalFile, pplib::File::READ);
+        ss.open(OriginalFile, pplib::File::FileMode::READ);
     }
     catch (...) {
         zz.close();
@@ -152,7 +152,7 @@ int CMP3Thread::LockFile()
 
 void CMP3Thread::stopEncode()
 {
-    encoder.stop();
+    encoder.stopEncoder();
 }
 
 void CMP3Thread::run()
@@ -217,11 +217,11 @@ void CMP3Thread::initMp3Encoder(pplib::AudioEncoder_MP3& encoder)
 
 pplib::AudioDecoder* CMP3Thread::getDecoder(const pplib::AudioInfo& info)
 {
-    if (info.Format == pplib::AudioInfo::AIFF) {
+    if (info.Format == pplib::AudioInfo::AudioFormat::AIFF) {
         return new pplib::AudioDecoder_Aiff();
-    } else if (info.Format == pplib::AudioInfo::WAVE) {
+    } else if (info.Format == pplib::AudioInfo::AudioFormat::WAVE) {
         return new pplib::AudioDecoder_Wave();
-    } else if (info.Format == pplib::AudioInfo::MP3) {
+    } else if (info.Format == pplib::AudioInfo::AudioFormat::MP3) {
         return new pplib::AudioDecoder_MP3();
     }
     throw pplib::UnsupportedAudioFormatException();

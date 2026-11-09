@@ -30,13 +30,29 @@
 #include <QTreeView>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+// Die Defines setzt auch CMake global; die Guardierungen vermeiden
+// Warnungen ueber doppelte Definition.
+#ifndef WITH_QT
 #define WITH_QT
+#endif
+#ifndef PPL_WITH_QT6
 #define PPL_WITH_QT6
+#endif
+#ifndef PPL_QT_STRING_UTF8
 #define PPL_QT_STRING_UTF8
+#endif
 #include <list>
 #include <map>
-#include <pplib-audio.h>
-#include <pplib.h>
+#include <pplib/audio/audioinfo.h>
+#include <pplib/audio/decoder.h>
+#include <pplib/audio/encoder.h>
+#include <pplib/core/dir.h>
+#include <pplib/core/file.h>
+#include <pplib/core/mutex.h>
+#include <pplib/core/thread.h>
+#include <pplib/core/threadpool.h>
+#include <pplib/types/string.h>
+#include <pplib/types/widestring.h>
 
 #define READCACHESIZE 512 * 1024
 #define WRITECACHESIZE 2 * 1024 * 1024

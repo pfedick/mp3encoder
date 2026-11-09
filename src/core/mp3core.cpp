@@ -27,6 +27,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <pplib/core/random.h>
+#include <pplib/core/regex.h>
+
 #include "mp3core.h"
 
 CMP3Core::CMP3Core()
@@ -108,7 +111,6 @@ void CMP3Core::CheckTodo(QTreeWidget* filequeue)
     }
     pplib::Dir d;
     pplib::DirEntry dir;
-    pplib::Dir::Iterator dirIt;
     pplib::DirEntry entry;
     pplib::String pattern;
     uint64_t highest, now;
@@ -126,9 +128,8 @@ void CMP3Core::CheckTodo(QTreeWidget* filequeue)
         pattern.trimRight("/");
         pattern += "/*.*";
         try {
-            d.open(path.Source, d.SORT_FILENAME_IGNORCASE);
-            d.reset(dirIt);
-            while (d.getNext(entry, dirIt)) {
+            d.open(path.Source, pplib::Dir::Sort::FilenameIgnoreCase);
+            for (const pplib::DirEntry& entry : d) {
                 // Es muss sich um eine gültige Datei handeln
                 if (entry.isFile() == true) {
                     // Matched das File auf .wav oder .mp3?
@@ -232,25 +233,20 @@ void CMP3Core::addPayloadFromFileQueue(QTreeWidget* filequeue)
 
 void CMP3Core::stopEncoder()
 {
-    pplib::ThreadPool::iterator it;
-    Threads.lock();
-    for (it = Threads.begin(); it != Threads.end(); ++it) {
-        static_cast<CMP3Thread*>(*it)->stopEncode();
+    // getThreads() liefert eine Momentaufnahme des Pools und sperrt intern.
+    for (pplib::Thread* poolThread : Threads.getThreads()) {
+        static_cast<CMP3Thread*>(poolThread)->stopEncode();
     }
-    Threads.unlock();
     Threads.stopThreads();
 }
 
 void CMP3Core::FinishThreads(QTreeWidget* t)
 {
     Mutex.lock();
-    Threads.lock();
-    pplib::ThreadPool::iterator it;
     pplib::String tmp;
     pplib::WideString wtmp;
-    it = Threads.begin();
-    while (it != Threads.end()) {
-        CMP3Thread* thread = static_cast<CMP3Thread*>(*it);
+    for (pplib::Thread* poolThread : Threads.getThreads()) {
+        CMP3Thread* thread = static_cast<CMP3Thread*>(poolThread);
         if (thread->isRunning() == false && thread->threadIsRunning() == false) {
             // TODO: Inhalt des Threads wird in Done gespeichert
             if (t) {
@@ -276,16 +272,10 @@ void CMP3Core::FinishThreads(QTreeWidget* t)
                 t->resizeColumnToContents(3);
                 t->resizeColumnToContents(4);
             }
-            Threads.unlock();
             Threads.removeThread(thread);
             delete thread;
-            Threads.lock();
-            it = Threads.begin();
-        } else {
-            ++it;
         }
     }
-    Threads.unlock();
     Mutex.unlock();
 }
 
@@ -331,14 +321,12 @@ pplib::String TranslateEncoding(const Config::Audio& conf)
 void CMP3Core::UpdateProgress(QTreeWidget* t)
 {
     Mutex.lock();
-    Threads.lock();
     t->clear();
     pplib::String tmp;
     pplib::WideString wtmp;
-    pplib::ThreadPool::iterator it;
     int cpu = 1;
-    for (it = Threads.begin(); it != Threads.end(); ++it) {
-        CMP3Thread* thread = static_cast<CMP3Thread*>(*it);
+    for (pplib::Thread* poolThread : Threads.getThreads()) {
+        CMP3Thread* thread = static_cast<CMP3Thread*>(poolThread);
         tmp.setf("%i", cpu);
         QTreeWidgetItem* item;
         item = new QTreeWidgetItem(t);
@@ -375,7 +363,6 @@ void CMP3Core::UpdateProgress(QTreeWidget* t)
         t->resizeColumnToContents(6);
         t->resizeColumnToContents(7);
     }
-    Threads.unlock();
     Mutex.unlock();
 }
 
@@ -399,8 +386,9 @@ void CMP3Core::Stop()
 
 bool CMP3Core::isFileSupported(const pplib::String& filename)
 {
-    if (filename.pregMatch("/\\.wav$/i")) return true;
-    if (filename.pregMatch("/\\.aif{1,2}$/i")) return true;
-    if (filename.pregMatch("/\\.mp3$/i") == true && newconf.recode == true) return true;
+    const int flags = pplib::RegEx::Flags::CASELESS;
+    if (pplib::RegEx::match("\\.wav$", filename, flags)) return true;
+    if (pplib::RegEx::match("\\.aif{1,2}$", filename, flags)) return true;
+    if (pplib::RegEx::match("\\.mp3$", filename, flags) == true && newconf.recode == true) return true;
     return false;
 }

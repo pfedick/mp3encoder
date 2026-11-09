@@ -28,10 +28,12 @@
 #include <QDragEnterEvent>
 #include <QMimeData>
 
-#define WITH_QT
-#define PPL_QT_STRING_UTF8
-#include <pplib.h>
-#include <pplib-audio.h>
+// WITH_QT, PPL_WITH_QT6 und PPL_QT_STRING_UTF8 setzt das Build-System
+// (CMakeLists.txt) projektweit.
+#include <pplib/audio/id3tag.h>
+#include <pplib/core/file.h>
+#include <pplib/types/bytearray.h>
+#include <pplib/types/string.h>
 
 namespace Ui
 {

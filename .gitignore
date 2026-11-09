@@ -8,15 +8,13 @@
 /ui_mp3encode.h
 /ui_setup.h
 /release/
-/Makefile
-/Makefile.Debug
-/Makefile.Release
 /MP3Encoder.creator.user
 /dist/
 /tmp/
 /build/
 /debug/
 /distfiles/
+/compile_commands.json
 /object_script.mp3encode.Debug
 /object_script.mp3encode.Release
 .*.stash
