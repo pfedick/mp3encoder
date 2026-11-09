@@ -1,13 +1,9 @@
-/*
+/*******************************************************************************
  * This file is part of MP3Encoder by Patrick Fedick
- *
- * $Author: patrick $
- * $Revision: 1.5 $
- * $Date: 2010/04/03 15:08:46 $
- * $Id: editpath.h,v 1.5 2010/04/03 15:08:46 patrick Exp $
- *
- *
- * Copyright (c) 2009 Patrick Fedick
+ * Web: https://github.com/pfedick/mp3encoder
+ *******************************************************************************
+ * Copyright (c) 2026, Patrick Fedick <patrick@pfp.de>
+ * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,37 +31,36 @@ class EditPath : public QDialog
     Q_OBJECT
 
 public:
-	int id;
-    EditPath(QWidget *parent = 0);
+    int id;
+    EditPath(QWidget* parent = 0);
     ~EditPath();
-    void setGlobalConfig(const Config &conf);
-    void setConfig(const Config::PathConfig &conf);
+    void setGlobalConfig(const Config& conf);
+    void setConfig(const Config::PathConfig& conf);
     Config::PathConfig getConfig() const;
 
 private:
-    Config  global_conf;
-	bool	bConfigChanged;
+    Config global_conf;
+    bool bConfigChanged;
     Ui::EditPathClass ui;
     void SwitchBitrateMode(const Config::Audio::EncoderMode b);
     bool sanityCheck();
     void changeEvent(QEvent* event);
 
 private slots:
-	void on_ButtonOK_clicked();
-	void on_ButtonCancel_clicked();
-	void on_SourcePathButton_clicked();
-	void on_TargetPathButton_clicked();
-	void on_BackupPathButton_clicked();
+    void on_ButtonOK_clicked();
+    void on_ButtonCancel_clicked();
+    void on_SourcePathButton_clicked();
+    void on_TargetPathButton_clicked();
+    void on_BackupPathButton_clicked();
 
-	void on_backupCheckBox_toggled(bool v);
+    void on_backupCheckBox_toggled(bool v);
 
-	void on_radioButtonCBR_toggled(bool v);
-	void on_radioButtonABR_toggled(bool v);
-	void on_radioButtonVBR_toggled(bool v);
-	void on_quality_valueChanged(int i);
+    void on_radioButtonCBR_toggled(bool v);
+    void on_radioButtonABR_toggled(bool v);
+    void on_radioButtonVBR_toggled(bool v);
+    void on_quality_valueChanged(int i);
 
-	void changed();
-
+    void changed();
 };
 
 #endif // EDITPATH_H

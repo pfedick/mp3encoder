@@ -1,13 +1,9 @@
-/*
+/*******************************************************************************
  * This file is part of MP3Encoder by Patrick Fedick
- *
- * $Author: patrick $
- * $Revision: 1.9 $
- * $Date: 2009/06/11 20:09:50 $
- * $Id: main.cpp,v 1.9 2009/06/11 20:09:50 patrick Exp $
- *
- *
- * Copyright (c) 2009 Patrick Fedick
+ * Web: https://github.com/pfedick/mp3encoder
+ *******************************************************************************
+ * Copyright (c) 2026, Patrick Fedick <patrick@pfp.de>
+ * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,11 +26,10 @@
 #include <QApplication>
 #include <QMessageBox>
 
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-	setlocale(LC_ALL, "");
-	ppl7::String::setGlobalEncoding("UTF-8");
+    setlocale(LC_ALL, "");
+    ppl7::String::setGlobalEncoding("UTF-8");
     QApplication a(argc, argv);
 #if QT_VERSION < 0x050000
     QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));

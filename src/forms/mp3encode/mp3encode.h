@@ -1,13 +1,9 @@
-/*
+/*******************************************************************************
  * This file is part of MP3Encoder by Patrick Fedick
- *
- * $Author: patrick $
- * $Revision: 1.8 $
- * $Date: 2010/04/03 15:08:46 $
- * $Id: mp3encode.h,v 1.8 2010/04/03 15:08:46 patrick Exp $
- *
- *
- * Copyright (c) 2009 Patrick Fedick
+ * Web: https://github.com/pfedick/mp3encoder
+ *******************************************************************************
+ * Copyright (c) 2026, Patrick Fedick <patrick@pfp.de>
+ * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,42 +34,39 @@
 #include "version.h"
 #include "ui_mp3encode.h"
 
-
-
 class mp3encode : public QDialog
 {
     Q_OBJECT
 
 public:
-    mp3encode(CMP3Core *core, QWidget *parent = 0);
+    mp3encode(CMP3Core* core, QWidget* parent = 0);
     ~mp3encode();
 
-    CMP3Core *core;
+    CMP3Core* core;
 
     void InitWindow();
 
 private:
     Ui::mp3encodeClass ui;
-    QTimer *timer;
-    bool dragContainsValidFiles(const QMimeData *mime);
-    void handleFileDrop(const QMimeData *mime);
-    void addFileToQueue(const ppl7::String &filename);
+    QTimer* timer;
+    bool dragContainsValidFiles(const QMimeData* mime);
+    void handleFileDrop(const QMimeData* mime);
+    void addFileToQueue(const ppl7::String& filename);
     void updateAudioProfiles();
 
-
 protected:
-	void closeEvent(QCloseEvent *event);
-    bool eventFilter(QObject *target, QEvent *event);
+    void closeEvent(QCloseEvent* event);
+    bool eventFilter(QObject* target, QEvent* event);
     void changeEvent(QEvent* event);
 
 private slots:
-	void on_setupButton_clicked();
-	void on_startButton_clicked();
-	void on_stopButton_clicked();
-	void on_clearButton_clicked();
+    void on_setupButton_clicked();
+    void on_startButton_clicked();
+    void on_stopButton_clicked();
+    void on_clearButton_clicked();
     void on_id3tagEditorButton_clicked();
     void on_audioProfileComboBox_currentIndexChanged(int index);
-	void timerupdate();
+    void timerupdate();
 };
 
 #endif // MP3ENCODE_H

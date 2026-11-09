@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * This file is part of MP3Encoder by Patrick Fedick
+ * Web: https://github.com/pfedick/mp3encoder
+ *******************************************************************************
+ * Copyright (c) 2026, Patrick Fedick <patrick@pfp.de>
+ * All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "editid3tag.h"
 #include "ui_editid3tag.h"
 #define WITH_QT
@@ -13,18 +34,15 @@
 // global clipboard
 ppl7::ID3Tag Clipboard;
 
-
-
-EditId3Tag::EditId3Tag(QWidget* parent) :
-    QWidget(parent),
-    ui(new Ui::EditId3Tag)
+EditId3Tag::EditId3Tag(QWidget* parent)
+    : QWidget(parent),
+      ui(new Ui::EditId3Tag)
 {
     ui->setupUi(this);
     Clipboard.setLocalCharset("UTF-8");
     ui->filename->installEventFilter(this);
     ui->tagsGroupBox->installEventFilter(this);
     ui->insertButton->setEnabled(true);
-
 }
 
 EditId3Tag::~EditId3Tag()
@@ -41,7 +59,7 @@ void EditId3Tag::changeEvent(QEvent* event)
 
 bool EditId3Tag::eventFilter(QObject* target, QEvent* event)
 {
-    int type=event->type();
+    int type = event->type();
     if (target == ui->filename || target == ui->tagsGroupBox) {
         if (type == QEvent::Drop) {
             handleDropEvent(static_cast<QDropEvent*>(event));
@@ -58,9 +76,9 @@ bool EditId3Tag::eventFilter(QObject* target, QEvent* event)
 static bool isDropWithAudioFile(const QMimeData* mime)
 {
     if (!mime->hasUrls()) return false;
-    QList<QUrl>	list=mime->urls();
+    QList<QUrl> list = mime->urls();
     if (list.count() != 1) return false;
-    QUrl url=list.first();
+    QUrl url = list.first();
     /*
 #if QT_VERSION >= 0x050000
     QString file=url.path(QUrl::FullyDecoded);
@@ -73,7 +91,7 @@ static bool isDropWithAudioFile(const QMimeData* mime)
 
 bool EditId3Tag::handleDragEnterEvent(QDragEnterEvent* event)
 {
-    const QMimeData* mime=event->mimeData();
+    const QMimeData* mime = event->mimeData();
     if (!mime) {
         //event->ignore();
         return false;
@@ -88,13 +106,13 @@ bool EditId3Tag::handleDragEnterEvent(QDragEnterEvent* event)
 
 bool EditId3Tag::handleDropEvent(QDropEvent* event)
 {
-    const QMimeData* mime=event->mimeData();
+    const QMimeData* mime = event->mimeData();
     if (!mime) return false;
     if (!mime->hasUrls()) return false;
     event->accept();
-    QList<QUrl>	list=mime->urls();
-    QUrl url=list.first();
-    ppl7::String file=url.toLocalFile();
+    QList<QUrl> list = mime->urls();
+    QUrl url = list.first();
+    ppl7::String file = url.toLocalFile();
     ui->filename->setText(file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
     ppl7::ID3Tag Tag;
@@ -104,18 +122,19 @@ bool EditId3Tag::handleDropEvent(QDropEvent* event)
         Tag.load(file);
         //Tag.listFrames(false);
         //fillFormFromTag(Tag);
-    } catch (const ppl7::Exception& exp) {
+    }
+    catch (const ppl7::Exception& exp) {
         QMessageBox::critical(NULL, "Error", exp.toString());
     }
     fillFormFromTag(Tag);
-//}
+    //}
     QApplication::restoreOverrideCursor();
     return true;
 }
 
 void EditId3Tag::fillFormFromTag(const ppl7::ID3Tag& Tag)
 {
-    Cover=QPixmap();
+    Cover = QPixmap();
     ui->coverpic->setPixmap(Cover);
     ui->interpret->setText(Tag.getArtist());
     ui->titel->setText(Tag.getTitle());
@@ -131,18 +150,16 @@ void EditId3Tag::fillFormFromTag(const ppl7::ID3Tag& Tag)
     }
 }
 
-
 void EditId3Tag::on_copyButton_clicked()
 {
-    ppl7::String file=ui->filename->text();
+    ppl7::String file = ui->filename->text();
     //if (ppl7::File::exists(file)) {
     try {
         Clipboard.load(file);
         ui->insertButton->setEnabled(true);
-    } catch (const ppl7::Exception& exp) {
+    }
+    catch (const ppl7::Exception& exp) {
         QMessageBox::critical(NULL, "Error", exp.toString());
-
-
     }
     //}
 }
@@ -154,7 +171,7 @@ void EditId3Tag::on_insertButton_clicked()
 
 void EditId3Tag::on_reloadButton_clicked()
 {
-    ppl7::String file=ui->filename->text();
+    ppl7::String file = ui->filename->text();
     //if (!ppl7::File::exists(file)) return;
     QApplication::setOverrideCursor(Qt::WaitCursor);
     ppl7::ID3Tag Tag;
@@ -162,7 +179,8 @@ void EditId3Tag::on_reloadButton_clicked()
         Tag.setLocalCharset("UTF-8");
         Tag.load(file);
         fillFormFromTag(Tag);
-    } catch (const ppl7::Exception& exp) {
+    }
+    catch (const ppl7::Exception& exp) {
         QMessageBox::critical(NULL, "Error", exp.toString());
     }
     QApplication::restoreOverrideCursor();
@@ -170,7 +188,7 @@ void EditId3Tag::on_reloadButton_clicked()
 
 void EditId3Tag::on_saveButton_clicked()
 {
-    ppl7::String file=ui->filename->text();
+    ppl7::String file = ui->filename->text();
     //if (!ppl7::File::exists(file)) return;
     QApplication::setOverrideCursor(Qt::WaitCursor);
     try {
@@ -194,7 +212,8 @@ void EditId3Tag::on_saveButton_clicked()
         bin.copy(bytes.data(), bytes.size());
         Tag.setPicture(3, bin, "image/jpeg");
         Tag.save();
-    } catch (const ppl7::Exception& exp) {
+    }
+    catch (const ppl7::Exception& exp) {
         QMessageBox::critical(NULL, "Error", exp.toString());
     }
     QApplication::restoreOverrideCursor();
@@ -202,7 +221,7 @@ void EditId3Tag::on_saveButton_clicked()
 
 void EditId3Tag::on_delCoverButton_clicked()
 {
-    Cover=QPixmap();
+    Cover = QPixmap();
     ui->coverpic->setPixmap(Cover);
 }
 
@@ -212,14 +231,14 @@ void EditId3Tag::on_coverFromClipboardButton_clicked()
     if (!clipboard) return;
     if (clipboard->pixmap().isNull()) return;
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    Cover=clipboard->pixmap();
+    Cover = clipboard->pixmap();
     ui->coverpic->setPixmap(Cover.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     QApplication::restoreOverrideCursor();
 }
 
 void EditId3Tag::on_deleteButton_clicked()
 {
-    ppl7::String file=ui->filename->text();
+    ppl7::String file = ui->filename->text();
     //if (!ppl7::File::exists(file)) return;
     QApplication::setOverrideCursor(Qt::WaitCursor);
     try {
@@ -228,7 +247,8 @@ void EditId3Tag::on_deleteButton_clicked()
         Tag.load(file);
         Tag.clearTags();
         Tag.save();
-    } catch (const ppl7::Exception& exp) {
+    }
+    catch (const ppl7::Exception& exp) {
         QMessageBox::critical(NULL, "Error", exp.toString());
     }
     QApplication::restoreOverrideCursor();
