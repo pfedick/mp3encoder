@@ -51,7 +51,7 @@ private:
     QTimer* timer;
     bool dragContainsValidFiles(const QMimeData* mime);
     void handleFileDrop(const QMimeData* mime);
-    void addFileToQueue(const ppl7::String& filename);
+    void addFileToQueue(const pplib::String& filename);
     void updateAudioProfiles();
 
 protected:

@@ -30,8 +30,8 @@
 
 #define WITH_QT
 #define PPL_QT_STRING_UTF8
-#include <ppl7.h>
-#include <ppl7-audio.h>
+#include <pplib.h>
+#include <pplib-audio.h>
 
 namespace Ui
 {
@@ -53,7 +53,7 @@ private:
     bool eventFilter(QObject* target, QEvent* event);
     bool handleDragEnterEvent(QDragEnterEvent* event);
     bool handleDropEvent(QDropEvent* event);
-    void fillFormFromTag(const ppl7::ID3Tag& Tag);
+    void fillFormFromTag(const pplib::ID3Tag& Tag);
     void changeEvent(QEvent* event);
 
 private slots:

@@ -113,7 +113,7 @@ void EditPath::setConfig(const Config::PathConfig& conf)
 {
     int a;
     id = 1;
-    ppl7::String s;
+    pplib::String s;
     ui.SourcePath->setText(conf.Source);
     ui.TargetPath->setText(conf.Target);
     ui.BackupPath->setText(conf.Backup);
@@ -144,16 +144,16 @@ void EditPath::setConfig(const Config::PathConfig& conf)
 
     // Channels
     switch (conf.audio.channel_mode) {
-    case ppl7::AudioInfo::ChannelMode::MONO:
+    case pplib::AudioInfo::ChannelMode::MONO:
         a = 0;
         break;
-    case ppl7::AudioInfo::ChannelMode::DUAL_CHANNEL:
+    case pplib::AudioInfo::ChannelMode::DUAL_CHANNEL:
         a = 1;
         break;
-    case ppl7::AudioInfo::ChannelMode::STEREO:
+    case pplib::AudioInfo::ChannelMode::STEREO:
         a = 2;
         break;
-    case ppl7::AudioInfo::ChannelMode::JOINT_STEREO:
+    case pplib::AudioInfo::ChannelMode::JOINT_STEREO:
     default:
         a = 3;
         break;
@@ -218,7 +218,7 @@ bool EditPath::sanityCheck()
         QMessageBox::critical(NULL, tr("mp3encode"), tr("Source directory is missing"), QMessageBox::Ok | QMessageBox::Default);
         return false;
     }
-    if (!ppl7::File::statFile(conf.Source).isDir()) {
+    if (!pplib::File::statFile(conf.Source).isDir()) {
         QMessageBox::critical(this, tr("mp3encode"), tr("Source directory is invalid or does not exist"),
                               QMessageBox::Ok | QMessageBox::Default);
         return false;
@@ -229,7 +229,7 @@ bool EditPath::sanityCheck()
         QMessageBox::critical(NULL, tr("mp3encode"), tr("Target directory is missing"), QMessageBox::Ok | QMessageBox::Default);
         return false;
     }
-    if (!ppl7::File::statFile(conf.Target).isDir()) {
+    if (!pplib::File::statFile(conf.Target).isDir()) {
         QMessageBox::critical(this, tr("mp3encode"), tr("Target directory is invalid or does not exist"),
                               QMessageBox::Ok | QMessageBox::Default);
         return false;
@@ -241,7 +241,7 @@ bool EditPath::sanityCheck()
             QMessageBox::critical(NULL, tr("mp3encode"), tr("Backup directory is missing"), QMessageBox::Ok | QMessageBox::Default);
             return false;
         }
-        if (!ppl7::File::statFile(conf.Backup).isDir()) {
+        if (!pplib::File::statFile(conf.Backup).isDir()) {
             QMessageBox::critical(this, tr("mp3encode"), tr("Backup directory is invalid or does not exist"),
                                   QMessageBox::Ok | QMessageBox::Default);
             return false;
@@ -287,17 +287,17 @@ Config::PathConfig EditPath::getConfig() const
     // Channels
     switch (ui.channels->currentIndex()) {
     case 0:
-        conf.audio.channel_mode = ppl7::AudioInfo::ChannelMode::MONO;
+        conf.audio.channel_mode = pplib::AudioInfo::ChannelMode::MONO;
         break;
     case 1:
-        conf.audio.channel_mode = ppl7::AudioInfo::ChannelMode::DUAL_CHANNEL;
+        conf.audio.channel_mode = pplib::AudioInfo::ChannelMode::DUAL_CHANNEL;
         break;
     case 3:
-        conf.audio.channel_mode = ppl7::AudioInfo::ChannelMode::JOINT_STEREO;
+        conf.audio.channel_mode = pplib::AudioInfo::ChannelMode::JOINT_STEREO;
         break;
     case 2:
     default:
-        conf.audio.channel_mode = ppl7::AudioInfo::ChannelMode::STEREO;
+        conf.audio.channel_mode = pplib::AudioInfo::ChannelMode::STEREO;
         break;
     }
 

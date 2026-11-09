@@ -27,7 +27,7 @@ Config::Audio::Audio()
 {
     frequency = 44100;
     quality = 2;
-    channel_mode = ppl7::AudioInfo::ChannelMode::JOINT_STEREO;
+    channel_mode = pplib::AudioInfo::ChannelMode::JOINT_STEREO;
     mode = EncoderMode::VBR;
     cbr_bitrate = 320;
     abr_bitrate = 192;
@@ -37,19 +37,19 @@ Config::Audio::Audio()
 
 void Config::Audio::load(QSettings& settings)
 {
-    ppl7::String tmp;
+    pplib::String tmp;
     frequency = settings.value("frequency", "44100").toInt();
     quality = settings.value("quality", "2").toInt();
 
     tmp = settings.value("channels", "jstereo").toString();
     if (tmp == "stereo")
-        channel_mode = ppl7::AudioInfo::ChannelMode::STEREO;
+        channel_mode = pplib::AudioInfo::ChannelMode::STEREO;
     else if (tmp == "mono")
-        channel_mode = ppl7::AudioInfo::ChannelMode::MONO;
+        channel_mode = pplib::AudioInfo::ChannelMode::MONO;
     else if (tmp == "dual")
-        channel_mode = ppl7::AudioInfo::ChannelMode::DUAL_CHANNEL;
+        channel_mode = pplib::AudioInfo::ChannelMode::DUAL_CHANNEL;
     else
-        channel_mode = ppl7::AudioInfo::ChannelMode::JOINT_STEREO;
+        channel_mode = pplib::AudioInfo::ChannelMode::JOINT_STEREO;
 
     tmp = settings.value("mode", "vbr").toString();
     if (tmp == "abr")
@@ -78,16 +78,16 @@ void Config::Audio::save(QSettings& settings) const
     settings.setValue("frequency", frequency);
     settings.setValue("quality", quality);
     switch (channel_mode) {
-    case ppl7::AudioInfo::ChannelMode::STEREO:
+    case pplib::AudioInfo::ChannelMode::STEREO:
         settings.setValue("channels", "stereo");
         break;
-    case ppl7::AudioInfo::ChannelMode::MONO:
+    case pplib::AudioInfo::ChannelMode::MONO:
         settings.setValue("channels", "mono");
         break;
-    case ppl7::AudioInfo::ChannelMode::DUAL_CHANNEL:
+    case pplib::AudioInfo::ChannelMode::DUAL_CHANNEL:
         settings.setValue("channels", "dual");
         break;
-    case ppl7::AudioInfo::ChannelMode::JOINT_STEREO:
+    case pplib::AudioInfo::ChannelMode::JOINT_STEREO:
         settings.setValue("channels", "jstereo");
         break;
     }
@@ -157,13 +157,13 @@ Config::Config()
     autostart = false;
     recode = true;
     keepID3 = true;
-    priority = ppl7::Thread::Priority::NORMAL;
+    priority = pplib::Thread::Priority::NORMAL;
 }
 
-ppl7::String Config::getSystemLang()
+pplib::String Config::getSystemLang()
 {
     QLocale locale = QLocale::system();
-    ppl7::String lang;
+    pplib::String lang;
     switch (locale.language()) {
     case QLocale::German:
         lang = "de";
@@ -177,7 +177,7 @@ ppl7::String Config::getSystemLang()
 
 void Config::load()
 {
-    ppl7::String tmp;
+    pplib::String tmp;
     QSettings settings("Patrick F.-Productions", "mp3encode");
     settings.beginGroup("global");
     language = settings.value("language", Config::getSystemLang()).toString();
@@ -187,11 +187,11 @@ void Config::load()
     EncoderDelay = settings.value("EncoderDelay", 60).toInt();
     tmp = settings.value("priority", "normal").toString();
     if (tmp == "low")
-        priority = ppl7::Thread::Priority::LOWEST;
+        priority = pplib::Thread::Priority::LOWEST;
     else if (tmp == "high")
-        priority = ppl7::Thread::Priority::HIGHEST;
+        priority = pplib::Thread::Priority::HIGHEST;
     else
-        priority = ppl7::Thread::Priority::NORMAL;
+        priority = pplib::Thread::Priority::NORMAL;
     autostart = settings.value("autostart", false).toBool();
     recode = settings.value("recode", true).toBool();
     keepID3 = settings.value("keepID3", true).toBool();
@@ -208,8 +208,8 @@ void Config::load()
         settings.beginGroup(groups.at(i));
         Audio profile;
         profile.load(settings);
-        ppl7::String name = groups.at(i);
-        audioprofiles.insert(std::pair<ppl7::String, Audio>(name, profile));
+        pplib::String name = groups.at(i);
+        audioprofiles.insert(std::pair<pplib::String, Audio>(name, profile));
         settings.endGroup();
     }
     settings.endGroup();
@@ -226,12 +226,12 @@ void Config::save() const
     settings.setValue("numCPUs", numCPUs);
     settings.setValue("EncoderDelay", EncoderDelay);
     switch (priority) {
-    case ppl7::Thread::Priority::LOWEST:
-    case ppl7::Thread::Priority::BELOW_NORMAL:
+    case pplib::Thread::Priority::LOWEST:
+    case pplib::Thread::Priority::BELOW_NORMAL:
         settings.setValue("priority", "low");
         break;
-    case ppl7::Thread::Priority::HIGHEST:
-    case ppl7::Thread::Priority::ABOVE_NORMAL:
+    case pplib::Thread::Priority::HIGHEST:
+    case pplib::Thread::Priority::ABOVE_NORMAL:
         settings.setValue("priority", "high");
         break;
     default:
@@ -249,7 +249,7 @@ void Config::save() const
 
     // Audio-Profiles speichern
     settings.beginGroup("audioprofiles");
-    std::map<ppl7::String, Audio>::const_iterator it;
+    std::map<pplib::String, Audio>::const_iterator it;
     for (it = audioprofiles.begin(); it != audioprofiles.end(); ++it) {
         settings.beginGroup((*it).first);
         it->second.save(settings);
@@ -262,7 +262,7 @@ void Config::save() const
 
 void Config::loadPaths(QSettings& settings)
 {
-    ppl7::String tmp;
+    pplib::String tmp;
     int i = 0;
     while (1) {
         tmp.setf("Path_%i", i);
@@ -281,7 +281,7 @@ void Config::loadPaths(QSettings& settings)
 
 void Config::savePaths(QSettings& settings) const
 {
-    ppl7::String tmp;
+    pplib::String tmp;
     int i = 0;
     std::list<PathConfig>::const_iterator it;
     for (it = pathconfig.begin(); it != pathconfig.end(); ++it) {

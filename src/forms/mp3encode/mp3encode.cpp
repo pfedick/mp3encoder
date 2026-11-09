@@ -32,10 +32,10 @@ mp3encode::mp3encode(CMP3Core* core, QWidget* parent)
     : QDialog(parent)
 {
     this->core = core;
-    ppl7::String Tmp;
+    pplib::String Tmp;
     ui.setupUi(this);
     timer = new QTimer(this);
-    const char* lame_version = ppl7::AudioEncoder_MP3::getLameVersion();
+    const char* lame_version = pplib::AudioEncoder_MP3::getLameVersion();
     Tmp.setf("MP3Encoder - Version %s.%s / Lame Version %s", MP3ENCODE_VERSION, MP3ENCODE_BUILD_NUMBER, lame_version);
     this->setWindowTitle(Tmp);
 
@@ -70,7 +70,7 @@ void mp3encode::updateAudioProfiles()
 {
     QString current = ui.audioProfileComboBox->currentText();
     ui.audioProfileComboBox->clear();
-    std::map<ppl7::String, Config::Audio>::const_iterator it;
+    std::map<pplib::String, Config::Audio>::const_iterator it;
     for (it = core->newconf.audioprofiles.begin(); it != core->newconf.audioprofiles.end(); ++it) {
         ui.audioProfileComboBox->addItem((*it).first);
     }
@@ -109,7 +109,7 @@ bool mp3encode::dragContainsValidFiles(const QMimeData* mime)
     QList<QUrl> list = mime->urls();
     for (int i = 0; i < list.size(); i++) {
         QUrl url = list[i];
-        ppl7::String file = url.toLocalFile();
+        pplib::String file = url.toLocalFile();
         if (core->isFileSupported(file)) return true;
     }
     return false;
@@ -120,17 +120,17 @@ void mp3encode::handleFileDrop(const QMimeData* mime)
     QList<QUrl> list = mime->urls();
     for (int i = 0; i < list.size(); i++) {
         QUrl url = list[i];
-        ppl7::String file = url.toLocalFile();
+        pplib::String file = url.toLocalFile();
         if (core->isFileSupported(file)) {
             addFileToQueue(file);
         }
     }
-    ppl7::String s;
+    pplib::String s;
     s.setf("%d", ui.QueueTreeWidget->topLevelItemCount());
     ui.numQueue->setText(s);
 }
 
-void mp3encode::addFileToQueue(const ppl7::String& filename)
+void mp3encode::addFileToQueue(const pplib::String& filename)
 {
     int count = ui.QueueTreeWidget->topLevelItemCount();
     for (int i = 0; i < count; i++) {
@@ -139,8 +139,8 @@ void mp3encode::addFileToQueue(const ppl7::String& filename)
     }
     Config::Audio audio = core->newconf.audio_default;
 
-    ppl7::String profilename = ui.audioProfileComboBox->currentText();
-    std::map<ppl7::String, Config::Audio>::const_iterator it;
+    pplib::String profilename = ui.audioProfileComboBox->currentText();
+    std::map<pplib::String, Config::Audio>::const_iterator it;
     it = core->newconf.audioprofiles.find(profilename);
     if (it != core->newconf.audioprofiles.end()) {
         audio = (*it).second;
@@ -196,7 +196,7 @@ void mp3encode::on_audioProfileComboBox_currentIndexChanged(int)
 
 void mp3encode::timerupdate()
 {
-    ppl7::String s;
+    pplib::String s;
     s.setf("%i", core->numFiles);
     //printf("Timer\n");
     core->CheckTodo(ui.QueueTreeWidget);

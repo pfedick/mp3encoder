@@ -29,7 +29,7 @@
 int main(int argc, char* argv[])
 {
     setlocale(LC_ALL, "");
-    ppl7::String::setGlobalEncoding("UTF-8");
+    pplib::String::setGlobalEncoding("UTF-8");
     QApplication a(argc, argv);
 #if QT_VERSION < 0x050000
     QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));

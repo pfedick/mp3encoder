@@ -48,7 +48,7 @@ void EditAudioProfile::changeEvent(QEvent* event)
     }
 }
 
-void EditAudioProfile::setConfig(const ppl7::String& name, const Config::Audio& audio)
+void EditAudioProfile::setConfig(const pplib::String& name, const Config::Audio& audio)
 {
     ui->name->setText(name);
     // Frequency
@@ -65,16 +65,16 @@ void EditAudioProfile::setConfig(const ppl7::String& name, const Config::Audio& 
 
     // Channels
     switch (audio.channel_mode) {
-    case ppl7::AudioInfo::ChannelMode::MONO:
+    case pplib::AudioInfo::ChannelMode::MONO:
         ui->channels->setCurrentIndex(0);
         break;
-    case ppl7::AudioInfo::ChannelMode::DUAL_CHANNEL:
+    case pplib::AudioInfo::ChannelMode::DUAL_CHANNEL:
         ui->channels->setCurrentIndex(1);
         break;
-    case ppl7::AudioInfo::ChannelMode::STEREO:
+    case pplib::AudioInfo::ChannelMode::STEREO:
         ui->channels->setCurrentIndex(2);
         break;
-    case ppl7::AudioInfo::ChannelMode::JOINT_STEREO:
+    case pplib::AudioInfo::ChannelMode::JOINT_STEREO:
     default:
         ui->channels->setCurrentIndex(3);
         break;
@@ -106,7 +106,7 @@ void EditAudioProfile::setConfig(const ppl7::String& name, const Config::Audio& 
     ui->ButtonOK->setEnabled(false);
 }
 
-ppl7::String EditAudioProfile::getName() const
+pplib::String EditAudioProfile::getName() const
 {
     return ui->name->text().trimmed();
 }
@@ -130,17 +130,17 @@ Config::Audio EditAudioProfile::getConfig() const
     // Channels
     switch (ui->channels->currentIndex()) {
     case 0:
-        audio.channel_mode = ppl7::AudioInfo::ChannelMode::MONO;
+        audio.channel_mode = pplib::AudioInfo::ChannelMode::MONO;
         break;
     case 1:
-        audio.channel_mode = ppl7::AudioInfo::ChannelMode::DUAL_CHANNEL;
+        audio.channel_mode = pplib::AudioInfo::ChannelMode::DUAL_CHANNEL;
         break;
     case 3:
-        audio.channel_mode = ppl7::AudioInfo::ChannelMode::JOINT_STEREO;
+        audio.channel_mode = pplib::AudioInfo::ChannelMode::JOINT_STEREO;
         break;
     case 2:
     default:
-        audio.channel_mode = ppl7::AudioInfo::ChannelMode::STEREO;
+        audio.channel_mode = pplib::AudioInfo::ChannelMode::STEREO;
         break;
     }
 

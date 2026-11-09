@@ -35,8 +35,8 @@
 #define PPL_QT_STRING_UTF8
 #include <list>
 #include <map>
-#include <ppl7-audio.h>
-#include <ppl7.h>
+#include <pplib-audio.h>
+#include <pplib.h>
 
 #define READCACHESIZE 512 * 1024
 #define WRITECACHESIZE 2 * 1024 * 1024
@@ -58,7 +58,7 @@ public:
         Audio();
         int frequency;
         int quality;
-        ppl7::AudioInfo::ChannelMode channel_mode;
+        pplib::AudioInfo::ChannelMode channel_mode;
         EncoderMode mode;
         int cbr_bitrate;
         int abr_bitrate;
@@ -70,9 +70,9 @@ public:
     class PathConfig
     {
     public:
-        ppl7::String Source;
-        ppl7::String Target;
-        ppl7::String Backup;
+        pplib::String Source;
+        pplib::String Target;
+        pplib::String Backup;
         bool active;
         bool audio_override;
         bool enable_backup;
@@ -85,7 +85,7 @@ public:
 private:
     void loadPaths(QSettings& settings);
     void savePaths(QSettings& settings) const;
-    static ppl7::String getSystemLang();
+    static pplib::String getSystemLang();
 
 public:
     int numCPUs;
@@ -93,11 +93,11 @@ public:
     bool recode;
     bool keepID3;
     int EncoderDelay;
-    ppl7::String language;
-    ppl7::Thread::Priority priority;
+    pplib::String language;
+    pplib::Thread::Priority priority;
     Audio audio_default;
     std::list<PathConfig> pathconfig;
-    std::map<ppl7::String, Audio> audioprofiles;
+    std::map<pplib::String, Audio> audioprofiles;
 
 public:
     Config();
@@ -107,23 +107,23 @@ public:
     QString getCurrentProfile();
 };
 
-class CMP3Thread : public ppl7::Thread
+class CMP3Thread : public pplib::Thread
 {
     // friend class CMP3Core;
 private:
-    ppl7::AudioEncoder_MP3 encoder;
+    pplib::AudioEncoder_MP3 encoder;
     bool bFileRenamed;
     bool bFinished;
     bool running;
     CMP3Core* core;
-    ppl7::DirEntry dir;
-    ppl7::String Filename;
-    ppl7::String TargetFile, EndFile, OriginalFile;
-    ppl7::String Backup;
+    pplib::DirEntry dir;
+    pplib::String Filename;
+    pplib::String TargetFile, EndFile, OriginalFile;
+    pplib::String Backup;
     Config::PathConfig config;
-    ppl7::File ss, zz;
+    pplib::File ss, zz;
     double startTime;
-    ppl7::AudioDecoder* getDecoder(const ppl7::AudioInfo& info);
+    pplib::AudioDecoder* getDecoder(const pplib::AudioInfo& info);
 
     float progress, faktor;
     int length;
@@ -133,21 +133,21 @@ public:
     CMP3Thread(CMP3Core* core);
     ~CMP3Thread();
     void setConfig(const Config::Audio& default_audio, const Config::PathConfig& path);
-    void setDirEntry(const ppl7::DirEntry& dir);
+    void setDirEntry(const pplib::DirEntry& dir);
     const Config::PathConfig& getConfig() const;
     float getFactor() const;
     int getLength() const;
     int getTime() const;
     int getRest() const;
     float getProgress() const;
-    const ppl7::String& getFilename() const;
+    const pplib::String& getFilename() const;
     bool isRunning() const;
 
     void stopEncode();
 
     int LockFile();
     virtual void run();
-    void initMp3Encoder(ppl7::AudioEncoder_MP3& encoder);
+    void initMp3Encoder(pplib::AudioEncoder_MP3& encoder);
     void encode();
     void updateProgress(int progress);
 };
@@ -164,16 +164,16 @@ public:
 class QueueTreeWidgetItem : public QTreeWidgetItem
 {
 public:
-    ppl7::String Filename;
+    pplib::String Filename;
     Config::Audio audio;
 };
 
 class CMP3Core
 {
 private:
-    ppl7::Mutex Mutex;
-    ppl7::String MyId;
-    ppl7::ThreadPool Threads;
+    pplib::Mutex Mutex;
+    pplib::String MyId;
+    pplib::ThreadPool Threads;
     void stopEncoder();
     void addPayloadFromFileQueue(QTreeWidget* filequeue);
 
@@ -198,11 +198,11 @@ public:
     void FinishThreads(QTreeWidget* t = NULL);
     const char* GetMyId();
 
-    bool isFileSupported(const ppl7::String& filename);
+    bool isFileSupported(const pplib::String& filename);
 };
 
-void TranslateEncoding(const Config::Audio& conf, ppl7::String& s);
-ppl7::String TranslateEncoding(const Config::Audio& conf);
+void TranslateEncoding(const Config::Audio& conf, pplib::String& s);
+pplib::String TranslateEncoding(const Config::Audio& conf);
 
 void SetBitrate(QComboBox* q, int bitrate);
 int GetBitrate(QComboBox* q);

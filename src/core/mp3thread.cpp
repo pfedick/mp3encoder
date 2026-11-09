@@ -40,7 +40,7 @@ CMP3Thread::~CMP3Thread()
     if (!bFinished) {
         if (bFileRenamed) {
             // Bisher encodetes File muss gelöscht werden
-            ppl7::File::remove(TargetFile);
+            pplib::File::remove(TargetFile);
         }
     }
 }
@@ -51,7 +51,7 @@ void CMP3Thread::setConfig(const Config::Audio& default_audio, const Config::Pat
     if (!config.audio_override) config.audio = default_audio;
 }
 
-void CMP3Thread::setDirEntry(const ppl7::DirEntry& dir)
+void CMP3Thread::setDirEntry(const pplib::DirEntry& dir)
 {
     this->dir = dir;
 }
@@ -81,7 +81,7 @@ int CMP3Thread::getRest() const
     return rest;
 }
 
-const ppl7::String& CMP3Thread::getFilename() const
+const pplib::String& CMP3Thread::getFilename() const
 {
     return Filename;
 }
@@ -101,7 +101,7 @@ int CMP3Thread::LockFile()
     //config.List("config");
     //dir.Print();
     const char* myid = core->GetMyId();
-    ppl7::String tmpfile, Source, Target;
+    pplib::String tmpfile, Source, Target;
     Source = config.Source;
     Target = config.Target;
     Source.trimRight("/");
@@ -123,14 +123,14 @@ int CMP3Thread::LockFile()
     TargetFile.setf("%s/%s.mp3.%s.tgt.enc", (const char*)Target, (const char*)tmpfile, myid);
     EndFile.setf("%s/%s.mp3", (const char*)Target, (const char*)tmpfile);
 
-    //printf ("OriginalFile: %ls\n",(const wchar_t*)ppl7::WideString(OriginalFile));
-    //printf ("EndFile: %ls\n",(const wchar_t*)ppl7::WideString(EndFile));
-    //printf ("TargetFile: %ls\n",(const wchar_t*)ppl7::WideString(TargetFile));
+    //printf ("OriginalFile: %ls\n",(const wchar_t*)pplib::WideString(OriginalFile));
+    //printf ("EndFile: %ls\n",(const wchar_t*)pplib::WideString(EndFile));
+    //printf ("TargetFile: %ls\n",(const wchar_t*)pplib::WideString(TargetFile));
     //fflush(stdout);
 
     // Kann die Zieldatei geöffnet werden?
     try {
-        zz.open(TargetFile, ppl7::File::WRITE);
+        zz.open(TargetFile, pplib::File::WRITE);
     }
     catch (...) {
         return 0;
@@ -138,11 +138,11 @@ int CMP3Thread::LockFile()
 
     // Quellfile öffnen
     try {
-        ss.open(OriginalFile, ppl7::File::READ);
+        ss.open(OriginalFile, pplib::File::READ);
     }
     catch (...) {
         zz.close();
-        ppl7::File::remove(TargetFile);
+        pplib::File::remove(TargetFile);
         return 0;
     }
     bFinished = false;
@@ -162,7 +162,7 @@ void CMP3Thread::run()
         encode();
         ret = 1;
     }
-    catch (const ppl7::Exception& exp) {
+    catch (const pplib::Exception& exp) {
         printf("CMP3Thread::run - ");
         exp.print();
         ret = 0;
@@ -173,22 +173,22 @@ void CMP3Thread::run()
         try {
             // Löschen oder Backup?
             if (config.enable_backup) {
-                ppl7::String BackupFile = config.Backup;
-                BackupFile += "/" + ppl7::File::getFilename(OriginalFile);
+                pplib::String BackupFile = config.Backup;
+                BackupFile += "/" + pplib::File::getFilename(OriginalFile);
                 try {
-                    ppl7::File::move(OriginalFile, BackupFile);
+                    pplib::File::move(OriginalFile, BackupFile);
                 }
                 catch (...) {
-                    ppl7::File::copy(OriginalFile, BackupFile);
-                    ppl7::File::remove(OriginalFile);
+                    pplib::File::copy(OriginalFile, BackupFile);
+                    pplib::File::remove(OriginalFile);
                 }
             } else {
-                ppl7::File::remove(OriginalFile);
+                pplib::File::remove(OriginalFile);
             }
-            ppl7::File::rename(TargetFile, EndFile);
+            pplib::File::rename(TargetFile, EndFile);
             bFinished = true;
         }
-        catch (const ppl7::Exception& exp) {
+        catch (const pplib::Exception& exp) {
             printf("ERROR CMP3Thread::run => %s\n", (const char*)exp.toString());
             fflush(stdout);
         }
@@ -202,7 +202,7 @@ static void progressPPL7Encoder(int progress, void* priv)
     ((CMP3Thread*)priv)->updateProgress(progress);
 }
 
-void CMP3Thread::initMp3Encoder(ppl7::AudioEncoder_MP3& encoder)
+void CMP3Thread::initMp3Encoder(pplib::AudioEncoder_MP3& encoder)
 {
     encoder.setProgressFunction(progressPPL7Encoder, this);
     encoder.setStereoMode(config.audio.channel_mode);
@@ -215,25 +215,25 @@ void CMP3Thread::initMp3Encoder(ppl7::AudioEncoder_MP3& encoder)
     }
 }
 
-ppl7::AudioDecoder* CMP3Thread::getDecoder(const ppl7::AudioInfo& info)
+pplib::AudioDecoder* CMP3Thread::getDecoder(const pplib::AudioInfo& info)
 {
-    if (info.Format == ppl7::AudioInfo::AIFF) {
-        return new ppl7::AudioDecoder_Aiff();
-    } else if (info.Format == ppl7::AudioInfo::WAVE) {
-        return new ppl7::AudioDecoder_Wave();
-    } else if (info.Format == ppl7::AudioInfo::MP3) {
-        return new ppl7::AudioDecoder_MP3();
+    if (info.Format == pplib::AudioInfo::AIFF) {
+        return new pplib::AudioDecoder_Aiff();
+    } else if (info.Format == pplib::AudioInfo::WAVE) {
+        return new pplib::AudioDecoder_Wave();
+    } else if (info.Format == pplib::AudioInfo::MP3) {
+        return new pplib::AudioDecoder_MP3();
     }
-    throw ppl7::UnsupportedAudioFormatException();
+    throw pplib::UnsupportedAudioFormatException();
 }
 
 void CMP3Thread::encode()
 {
-    ppl7::ID3Tag Tag;
+    pplib::ID3Tag Tag;
     initMp3Encoder(encoder);
-    ppl7::AudioInfo info;
-    if (ppl7::IdentAudioFile(ss, info) != true) {
-        throw ppl7::UnsupportedAudioFormatException();
+    pplib::AudioInfo info;
+    if (pplib::IdentAudioFile(ss, info) != true) {
+        throw pplib::UnsupportedAudioFormatException();
     }
     if (info.HaveID3v2Tag) {
         try {
@@ -243,10 +243,10 @@ void CMP3Thread::encode()
             info.HaveID3v2Tag = false;
         }
     }
-    ppl7::AudioDecoder* decoder = getDecoder(info);
+    pplib::AudioDecoder* decoder = getDecoder(info);
     try {
         length = info.Length / 1000;
-        startTime = ppl7::GetMicrotime();
+        startTime = pplib::GetMicrotime();
         decoder->open(ss);
         encoder.startEncode(zz);
         if (info.HaveID3v2Tag) {
@@ -272,7 +272,7 @@ void CMP3Thread::encode()
 void CMP3Thread::updateProgress(int progress)
 {
     this->progress = (float)progress;
-    double duration = ppl7::GetMicrotime() - startTime;
+    double duration = pplib::GetMicrotime() - startTime;
     time = (int)duration;
     if (progress > 0) {
         double estimated_total = duration * 100.0 / progress;

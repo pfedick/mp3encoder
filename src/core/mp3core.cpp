@@ -33,7 +33,7 @@ CMP3Core::CMP3Core()
 {
     numFiles = 0;
     int p = (int)getpid();
-    MyId.setf("%i_%i", p, (int)ppl7::rand(66666, 99999999));
+    MyId.setf("%i_%i", p, (int)pplib::rand(66666, 99999999));
     newconf.load();
     loadTranslation();
 }
@@ -42,7 +42,7 @@ void CMP3Core::loadTranslation()
 {
     qApp->removeTranslator(&qtTranslator);
     qApp->removeTranslator(&mp3encodeTranslator);
-    ppl7::String filename;
+    pplib::String filename;
     filename = ":/locale/qt_" + newconf.language;
     qtTranslator.load(filename);
     qApp->installTranslator(&qtTranslator);
@@ -58,7 +58,7 @@ const char* CMP3Core::GetMyId()
 
 void CMP3Core::SaveWindow(const char* name, const Rect& r)
 {
-    ppl7::String tmp;
+    pplib::String tmp;
     tmp.setf("%i,%i,%i,%i", r.left, r.top, r.width, r.height);
     Mutex.lock();
     QSettings settings("Patrick F.-Productions", "mp3encode");
@@ -68,10 +68,10 @@ void CMP3Core::SaveWindow(const char* name, const Rect& r)
     Mutex.unlock();
 }
 
-static Rect StringToRect(const ppl7::String& data)
+static Rect StringToRect(const pplib::String& data)
 {
     Rect r;
-    ppl7::Array tok(data, ",");
+    pplib::Array tok(data, ",");
     r.left = r.top = r.width = r.height = 0;
     if (tok.size() == 4) {
         r.left = tok[0].toInt();
@@ -84,7 +84,7 @@ static Rect StringToRect(const ppl7::String& data)
 
 Rect CMP3Core::LoadWindow(const char* name)
 {
-    ppl7::String tmp;
+    pplib::String tmp;
     Mutex.lock();
     QSettings settings("Patrick F.-Productions", "mp3encode");
     settings.beginGroup("windows");
@@ -106,13 +106,13 @@ void CMP3Core::CheckTodo(QTreeWidget* filequeue)
         addPayloadFromFileQueue(filequeue); // entsperrt Mutex
         return;
     }
-    ppl7::Dir d;
-    ppl7::DirEntry dir;
-    ppl7::Dir::Iterator dirIt;
-    ppl7::DirEntry entry;
-    ppl7::String pattern;
+    pplib::Dir d;
+    pplib::DirEntry dir;
+    pplib::Dir::Iterator dirIt;
+    pplib::DirEntry entry;
+    pplib::String pattern;
     uint64_t highest, now;
-    highest = now = ppl7::GetTime();
+    highest = now = pplib::GetTime();
     highest += 1000;
     int count = 0;
     bool found = false;
@@ -132,7 +132,7 @@ void CMP3Core::CheckTodo(QTreeWidget* filequeue)
                 // Es muss sich um eine gültige Datei handeln
                 if (entry.isFile() == true) {
                     // Matched das File auf .wav oder .mp3?
-                    ppl7::String Filename = entry.Filename;
+                    pplib::String Filename = entry.Filename;
                     if (isFileSupported(Filename)) {
                         count++;
                         /*
@@ -186,9 +186,9 @@ void CMP3Core::addPayloadFromFileQueue(QTreeWidget* filequeue)
  */
 {
     QueueTreeWidgetItem* item = (QueueTreeWidgetItem*)filequeue->topLevelItem(0);
-    ppl7::DirEntry dir;
+    pplib::DirEntry dir;
     try {
-        ppl7::File::statFile(item->Filename, dir);
+        pplib::File::statFile(item->Filename, dir);
         if (!dir.isFile()) {
             item = (QueueTreeWidgetItem*)filequeue->takeTopLevelItem(0);
             delete (item);
@@ -197,7 +197,7 @@ void CMP3Core::addPayloadFromFileQueue(QTreeWidget* filequeue)
         }
     }
     catch (...) {
-        printf("DEBUG File::statFile: %ls\n", (const wchar_t*)ppl7::WideString(item->Filename));
+        printf("DEBUG File::statFile: %ls\n", (const wchar_t*)pplib::WideString(item->Filename));
         item = (QueueTreeWidgetItem*)filequeue->takeTopLevelItem(0);
         delete (item);
         Mutex.unlock();
@@ -232,7 +232,7 @@ void CMP3Core::addPayloadFromFileQueue(QTreeWidget* filequeue)
 
 void CMP3Core::stopEncoder()
 {
-    ppl7::ThreadPool::iterator it;
+    pplib::ThreadPool::iterator it;
     Threads.lock();
     for (it = Threads.begin(); it != Threads.end(); ++it) {
         static_cast<CMP3Thread*>(*it)->stopEncode();
@@ -245,9 +245,9 @@ void CMP3Core::FinishThreads(QTreeWidget* t)
 {
     Mutex.lock();
     Threads.lock();
-    ppl7::ThreadPool::iterator it;
-    ppl7::String tmp;
-    ppl7::WideString wtmp;
+    pplib::ThreadPool::iterator it;
+    pplib::String tmp;
+    pplib::WideString wtmp;
     it = Threads.begin();
     while (it != Threads.end()) {
         CMP3Thread* thread = static_cast<CMP3Thread*>(*it);
@@ -289,9 +289,9 @@ void CMP3Core::FinishThreads(QTreeWidget* t)
     Mutex.unlock();
 }
 
-void TranslateEncoding(const Config::Audio& conf, ppl7::String& s)
+void TranslateEncoding(const Config::Audio& conf, pplib::String& s)
 {
-    ppl7::String s1;
+    pplib::String s1;
     switch (conf.mode) {
     case Config::Audio::EncoderMode::CBR:
         s.setf("CBR %d, ", conf.cbr_bitrate);
@@ -305,13 +305,13 @@ void TranslateEncoding(const Config::Audio& conf, ppl7::String& s)
     }
     s.appendf("q%d, ", conf.quality);
     switch (conf.channel_mode) {
-    case ppl7::AudioInfo::ChannelMode::STEREO:
+    case pplib::AudioInfo::ChannelMode::STEREO:
         s.append("stereo");
         break;
-    case ppl7::AudioInfo::ChannelMode::DUAL_CHANNEL:
+    case pplib::AudioInfo::ChannelMode::DUAL_CHANNEL:
         s.append("dual");
         break;
-    case ppl7::AudioInfo::ChannelMode::JOINT_STEREO:
+    case pplib::AudioInfo::ChannelMode::JOINT_STEREO:
         s.append("jstereo");
         break;
         break;
@@ -321,9 +321,9 @@ void TranslateEncoding(const Config::Audio& conf, ppl7::String& s)
     }
 }
 
-ppl7::String TranslateEncoding(const Config::Audio& conf)
+pplib::String TranslateEncoding(const Config::Audio& conf)
 {
-    ppl7::String s;
+    pplib::String s;
     TranslateEncoding(conf, s);
     return s;
 }
@@ -333,9 +333,9 @@ void CMP3Core::UpdateProgress(QTreeWidget* t)
     Mutex.lock();
     Threads.lock();
     t->clear();
-    ppl7::String tmp;
-    ppl7::WideString wtmp;
-    ppl7::ThreadPool::iterator it;
+    pplib::String tmp;
+    pplib::WideString wtmp;
+    pplib::ThreadPool::iterator it;
     int cpu = 1;
     for (it = Threads.begin(); it != Threads.end(); ++it) {
         CMP3Thread* thread = static_cast<CMP3Thread*>(*it);
@@ -397,7 +397,7 @@ void CMP3Core::Stop()
     FinishThreads();
 }
 
-bool CMP3Core::isFileSupported(const ppl7::String& filename)
+bool CMP3Core::isFileSupported(const pplib::String& filename)
 {
     if (filename.pregMatch("/\\.wav$/i")) return true;
     if (filename.pregMatch("/\\.aif{1,2}$/i")) return true;

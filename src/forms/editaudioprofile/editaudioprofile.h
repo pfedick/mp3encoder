@@ -38,8 +38,8 @@ public:
     explicit EditAudioProfile(QWidget* parent = 0);
     ~EditAudioProfile();
 
-    void setConfig(const ppl7::String& name, const Config::Audio& audio);
-    ppl7::String getName() const;
+    void setConfig(const pplib::String& name, const Config::Audio& audio);
+    pplib::String getName() const;
     Config::Audio getConfig() const;
 
 private:

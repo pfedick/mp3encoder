@@ -37,7 +37,7 @@ public:
 class AudioProfileTreeWidgetItem : public QTreeWidgetItem
 {
 public:
-    ppl7::String name;
+    pplib::String name;
     Config::Audio audio;
     void render();
 };

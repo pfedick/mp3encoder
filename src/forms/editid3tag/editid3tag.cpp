@@ -24,15 +24,15 @@
 #define WITH_QT
 #define PPL_WITH_QT6
 #define PPL_QT_STRING_UTF8
-#include <ppl7.h>
-#include <ppl7-audio.h>
+#include <pplib.h>
+#include <pplib-audio.h>
 #include <QPixmap>
 #include <QBuffer>
 #include <QClipboard>
 #include <QMessageBox>
 
 // global clipboard
-ppl7::ID3Tag Clipboard;
+pplib::ID3Tag Clipboard;
 
 EditId3Tag::EditId3Tag(QWidget* parent)
     : QWidget(parent),
@@ -112,18 +112,18 @@ bool EditId3Tag::handleDropEvent(QDropEvent* event)
     event->accept();
     QList<QUrl> list = mime->urls();
     QUrl url = list.first();
-    ppl7::String file = url.toLocalFile();
+    pplib::String file = url.toLocalFile();
     ui->filename->setText(file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
-    ppl7::ID3Tag Tag;
+    pplib::ID3Tag Tag;
     Tag.setLocalCharset("UTF-8");
-    //if (ppl7::File::exists(file)) {
+    //if (pplib::File::exists(file)) {
     try {
         Tag.load(file);
         //Tag.listFrames(false);
         //fillFormFromTag(Tag);
     }
-    catch (const ppl7::Exception& exp) {
+    catch (const pplib::Exception& exp) {
         QMessageBox::critical(NULL, "Error", exp.toString());
     }
     fillFormFromTag(Tag);
@@ -132,7 +132,7 @@ bool EditId3Tag::handleDropEvent(QDropEvent* event)
     return true;
 }
 
-void EditId3Tag::fillFormFromTag(const ppl7::ID3Tag& Tag)
+void EditId3Tag::fillFormFromTag(const pplib::ID3Tag& Tag)
 {
     Cover = QPixmap();
     ui->coverpic->setPixmap(Cover);
@@ -143,7 +143,7 @@ void EditId3Tag::fillFormFromTag(const ppl7::ID3Tag& Tag)
     ui->year->setValue(Tag.getYear().toInt());
     ui->album->setText(Tag.getAlbum());
     ui->recordlabel->setText(Tag.getLabel());
-    ppl7::ByteArray cover;
+    pplib::ByteArray cover;
     if (Tag.getPicture(3, cover)) {
         Cover.loadFromData((const uchar*)cover.adr(), cover.size());
         ui->coverpic->setPixmap(Cover.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -152,13 +152,13 @@ void EditId3Tag::fillFormFromTag(const ppl7::ID3Tag& Tag)
 
 void EditId3Tag::on_copyButton_clicked()
 {
-    ppl7::String file = ui->filename->text();
-    //if (ppl7::File::exists(file)) {
+    pplib::String file = ui->filename->text();
+    //if (pplib::File::exists(file)) {
     try {
         Clipboard.load(file);
         ui->insertButton->setEnabled(true);
     }
-    catch (const ppl7::Exception& exp) {
+    catch (const pplib::Exception& exp) {
         QMessageBox::critical(NULL, "Error", exp.toString());
     }
     //}
@@ -171,16 +171,16 @@ void EditId3Tag::on_insertButton_clicked()
 
 void EditId3Tag::on_reloadButton_clicked()
 {
-    ppl7::String file = ui->filename->text();
-    //if (!ppl7::File::exists(file)) return;
+    pplib::String file = ui->filename->text();
+    //if (!pplib::File::exists(file)) return;
     QApplication::setOverrideCursor(Qt::WaitCursor);
-    ppl7::ID3Tag Tag;
+    pplib::ID3Tag Tag;
     try {
         Tag.setLocalCharset("UTF-8");
         Tag.load(file);
         fillFormFromTag(Tag);
     }
-    catch (const ppl7::Exception& exp) {
+    catch (const pplib::Exception& exp) {
         QMessageBox::critical(NULL, "Error", exp.toString());
     }
     QApplication::restoreOverrideCursor();
@@ -188,18 +188,18 @@ void EditId3Tag::on_reloadButton_clicked()
 
 void EditId3Tag::on_saveButton_clicked()
 {
-    ppl7::String file = ui->filename->text();
-    //if (!ppl7::File::exists(file)) return;
+    pplib::String file = ui->filename->text();
+    //if (!pplib::File::exists(file)) return;
     QApplication::setOverrideCursor(Qt::WaitCursor);
     try {
-        ppl7::ID3Tag Tag;
+        pplib::ID3Tag Tag;
         Tag.setLocalCharset("UTF-8");
         Tag.load(file);
         if (ui->deleteOtherTagsCheckBox->isChecked()) Tag.clearTags();
         Tag.setArtist(ui->interpret->text().trimmed());
         Tag.setTitle(ui->titel->text().trimmed());
         Tag.setGenre(ui->genre->text().trimmed());
-        Tag.setYear(ppl7::ToString("%d", ui->year->value()));
+        Tag.setYear(pplib::ToString("%d", ui->year->value()));
         Tag.setAlbum(ui->album->text().trimmed());
         Tag.setLabel(ui->recordlabel->text().trimmed());
         Tag.setComment(ui->comment->text().trimmed());
@@ -208,12 +208,12 @@ void EditId3Tag::on_saveButton_clicked()
         QBuffer buffer(&bytes);
         buffer.open(QIODevice::WriteOnly);
         Cover.save(&buffer, "JPEG", 95);
-        ppl7::ByteArray bin;
+        pplib::ByteArray bin;
         bin.copy(bytes.data(), bytes.size());
         Tag.setPicture(3, bin, "image/jpeg");
         Tag.save();
     }
-    catch (const ppl7::Exception& exp) {
+    catch (const pplib::Exception& exp) {
         QMessageBox::critical(NULL, "Error", exp.toString());
     }
     QApplication::restoreOverrideCursor();
@@ -238,17 +238,17 @@ void EditId3Tag::on_coverFromClipboardButton_clicked()
 
 void EditId3Tag::on_deleteButton_clicked()
 {
-    ppl7::String file = ui->filename->text();
-    //if (!ppl7::File::exists(file)) return;
+    pplib::String file = ui->filename->text();
+    //if (!pplib::File::exists(file)) return;
     QApplication::setOverrideCursor(Qt::WaitCursor);
     try {
-        ppl7::ID3Tag Tag;
+        pplib::ID3Tag Tag;
         Tag.setLocalCharset("UTF-8");
         Tag.load(file);
         Tag.clearTags();
         Tag.save();
     }
-    catch (const ppl7::Exception& exp) {
+    catch (const pplib::Exception& exp) {
         QMessageBox::critical(NULL, "Error", exp.toString());
     }
     QApplication::restoreOverrideCursor();

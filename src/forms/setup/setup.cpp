@@ -33,7 +33,7 @@ void PathTreeWidgetItem::render()
         setText(2, QObject::tr("aktiv"));
     else
         setText(2, QObject::tr("inaktiv"));
-    ppl7::String s;
+    pplib::String s;
     if (conf.audio_override) {
         switch (conf.audio.mode) {
         case Config::Audio::EncoderMode::CBR:
@@ -49,9 +49,9 @@ void PathTreeWidgetItem::render()
         }
         s.appendf("q%d, ", conf.audio.quality);
         switch (conf.audio.channel_mode) {
-        case ppl7::AudioInfo::ChannelMode::STEREO:
-        case ppl7::AudioInfo::ChannelMode::DUAL_CHANNEL:
-        case ppl7::AudioInfo::ChannelMode::JOINT_STEREO:
+        case pplib::AudioInfo::ChannelMode::STEREO:
+        case pplib::AudioInfo::ChannelMode::DUAL_CHANNEL:
+        case pplib::AudioInfo::ChannelMode::JOINT_STEREO:
             s.append("2");
             break;
         default:
@@ -241,7 +241,7 @@ void Setup::SwitchBitrateMode(const Config::Audio::EncoderMode b)
 void Setup::setConfig(const Config& conf)
 {
     int a;
-    ppl7::String s;
+    pplib::String s;
     a = ui.languageComboBox->findData(conf.language);
     if (a < 0) a = 0;
     ui.languageComboBox->setCurrentIndex(a);
@@ -253,12 +253,12 @@ void Setup::setConfig(const Config& conf)
 
     // Priority
     switch (conf.priority) {
-    case ppl7::Thread::Priority::LOWEST:
-    case ppl7::Thread::Priority::BELOW_NORMAL:
+    case pplib::Thread::Priority::LOWEST:
+    case pplib::Thread::Priority::BELOW_NORMAL:
         a = 0;
         break;
-    case ppl7::Thread::Priority::HIGHEST:
-    case ppl7::Thread::Priority::ABOVE_NORMAL:
+    case pplib::Thread::Priority::HIGHEST:
+    case pplib::Thread::Priority::ABOVE_NORMAL:
         a = 2;
         break;
     default:
@@ -282,16 +282,16 @@ void Setup::setConfig(const Config& conf)
 
     // Channels
     switch (conf.audio_default.channel_mode) {
-    case ppl7::AudioInfo::ChannelMode::MONO:
+    case pplib::AudioInfo::ChannelMode::MONO:
         a = 0;
         break;
-    case ppl7::AudioInfo::ChannelMode::DUAL_CHANNEL:
+    case pplib::AudioInfo::ChannelMode::DUAL_CHANNEL:
         a = 1;
         break;
-    case ppl7::AudioInfo::ChannelMode::STEREO:
+    case pplib::AudioInfo::ChannelMode::STEREO:
         a = 2;
         break;
-    case ppl7::AudioInfo::ChannelMode::JOINT_STEREO:
+    case pplib::AudioInfo::ChannelMode::JOINT_STEREO:
     default:
         a = 3;
         break;
@@ -325,7 +325,7 @@ void Setup::setConfig(const Config& conf)
     ui.ButtonUse->setEnabled(false);
 
     ui.profilesTreeWidget->clear();
-    std::map<ppl7::String, Config::Audio>::const_iterator it;
+    std::map<pplib::String, Config::Audio>::const_iterator it;
     for (it = conf.audioprofiles.begin(); it != conf.audioprofiles.end(); ++it) {
         AudioProfileTreeWidgetItem* item = new AudioProfileTreeWidgetItem();
         item->name = (*it).first;
@@ -432,13 +432,13 @@ Config Setup::getConfig() const
     // Priority
     switch (ui.Priority->currentIndex()) {
     case 0:
-        conf.priority = ppl7::Thread::Priority::LOWEST;
+        conf.priority = pplib::Thread::Priority::LOWEST;
         break;
     case 2:
-        conf.priority = ppl7::Thread::Priority::HIGHEST;
+        conf.priority = pplib::Thread::Priority::HIGHEST;
         break;
     default:
-        conf.priority = ppl7::Thread::Priority::NORMAL;
+        conf.priority = pplib::Thread::Priority::NORMAL;
     }
 
     // Frequency
@@ -456,17 +456,17 @@ Config Setup::getConfig() const
     // Channels
     switch (ui.channels->currentIndex()) {
     case 0:
-        conf.audio_default.channel_mode = ppl7::AudioInfo::ChannelMode::MONO;
+        conf.audio_default.channel_mode = pplib::AudioInfo::ChannelMode::MONO;
         break;
     case 1:
-        conf.audio_default.channel_mode = ppl7::AudioInfo::ChannelMode::DUAL_CHANNEL;
+        conf.audio_default.channel_mode = pplib::AudioInfo::ChannelMode::DUAL_CHANNEL;
         break;
     case 3:
-        conf.audio_default.channel_mode = ppl7::AudioInfo::ChannelMode::JOINT_STEREO;
+        conf.audio_default.channel_mode = pplib::AudioInfo::ChannelMode::JOINT_STEREO;
         break;
     case 2:
     default:
-        conf.audio_default.channel_mode = ppl7::AudioInfo::ChannelMode::STEREO;
+        conf.audio_default.channel_mode = pplib::AudioInfo::ChannelMode::STEREO;
         break;
     }
     // Quality
@@ -491,7 +491,7 @@ Config Setup::getConfig() const
     count = ui.profilesTreeWidget->topLevelItemCount();
     for (int i = 0; i < count; i++) {
         AudioProfileTreeWidgetItem* item = (AudioProfileTreeWidgetItem*)ui.profilesTreeWidget->topLevelItem(i);
-        conf.audioprofiles.insert(std::pair<ppl7::String, Config::Audio>(item->name, item->audio));
+        conf.audioprofiles.insert(std::pair<pplib::String, Config::Audio>(item->name, item->audio));
     }
     return conf;
 }
