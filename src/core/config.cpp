@@ -35,7 +35,7 @@ Config::Audio::Audio()
     vbr_max_bitrate = 320;
 }
 
-void Config::Audio::load(QSettings& settings)
+void Config::Audio::loadMp3(QSettings& settings)
 {
     pplib::String tmp;
     frequency = settings.value("frequency", "44100").toInt();
@@ -73,8 +73,29 @@ void Config::Audio::load(QSettings& settings)
     settings.endGroup();
 }
 
+void Config::Audio::load(QSettings& settings)
+{
+    int config_version = settings.value("config_version", 1).toInt();
+    if (config_version < 2) {
+        loadMp3(settings);
+        return;
+    }
+    format =
+        static_cast<pplib::AudioInfo::AudioFormat>(settings.value("format", static_cast<int>(pplib::AudioInfo::AudioFormat::MP3)).toInt());
+
+    settings.beginGroup("mp3");
+    loadMp3(settings);
+    settings.endGroup();
+    settings.beginGroup("flac");
+    flac_compression_level = settings.value("compression_level", "5").toInt();
+    settings.endGroup();
+}
+
 void Config::Audio::save(QSettings& settings) const
 {
+    settings.setValue("config_version", 2);
+    settings.setValue("format", static_cast<int>(format));
+    settings.beginGroup("mp3");
     settings.setValue("frequency", frequency);
     settings.setValue("quality", quality);
     switch (channel_mode) {
@@ -114,6 +135,10 @@ void Config::Audio::save(QSettings& settings) const
     settings.beginGroup("vbr");
     settings.setValue("bitrate_min", vbr_min_bitrate);
     settings.setValue("bitrate_max", vbr_max_bitrate);
+    settings.endGroup();
+    settings.endGroup();
+    settings.beginGroup("flac");
+    settings.setValue("compression_level", flac_compression_level);
     settings.endGroup();
 }
 

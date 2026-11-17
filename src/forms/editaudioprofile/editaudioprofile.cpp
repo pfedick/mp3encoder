@@ -34,6 +34,7 @@ EditAudioProfile::EditAudioProfile(QWidget* parent)
     QObject::connect(ui->minBitrate, SIGNAL(currentIndexChanged(int)), this, SLOT(changed()));
     QObject::connect(ui->maxBitrate, SIGNAL(currentIndexChanged(int)), this, SLOT(changed()));
     bConfigChanged = false;
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
 EditAudioProfile::~EditAudioProfile()
@@ -51,6 +52,8 @@ void EditAudioProfile::changeEvent(QEvent* event)
 void EditAudioProfile::setConfig(const pplib::String& name, const Config::Audio& audio)
 {
     ui->name->setText(name);
+    ui->encodingComboBox->setCurrentIndex(audio.format == pplib::AudioInfo::AudioFormat::FLAC ? 1 : 0);
+    ui->stackedWidget->setCurrentIndex(audio.format == pplib::AudioInfo::AudioFormat::FLAC ? 1 : 0);
     // Frequency
     switch (audio.frequency) {
     case 32000:
@@ -103,6 +106,9 @@ void EditAudioProfile::setConfig(const pplib::String& name, const Config::Audio&
         ui->radioButtonVBR->setChecked(true);
         break;
     }
+
+    // Flac
+    ui->flacCompressionLevel->setValue(audio.flac_compression_level);
     ui->ButtonOK->setEnabled(false);
 }
 
@@ -114,6 +120,17 @@ pplib::String EditAudioProfile::getName() const
 Config::Audio EditAudioProfile::getConfig() const
 {
     Config::Audio audio;
+    switch (ui->encodingComboBox->currentIndex()) {
+    case 0:
+        audio.format = pplib::AudioInfo::AudioFormat::MP3;
+        break;
+    case 1:
+        audio.format = pplib::AudioInfo::AudioFormat::FLAC;
+        break;
+    default:
+        audio.format = pplib::AudioInfo::AudioFormat::MP3;
+        break;
+    }
     // Frequency
     switch (ui->frequency->currentIndex()) {
     case 0:
@@ -155,6 +172,9 @@ Config::Audio EditAudioProfile::getConfig() const
     audio.abr_bitrate = GetBitrate(ui->BitrateABR);
     audio.vbr_min_bitrate = GetBitrate(ui->minBitrate);
     audio.vbr_max_bitrate = GetBitrate(ui->maxBitrate);
+
+    // Flac
+    audio.flac_compression_level = ui->flacCompressionLevel->value();
     return audio;
 }
 
@@ -242,4 +262,25 @@ void EditAudioProfile::on_quality_valueChanged(int i)
 {
     changed();
     ui->labelQuality->setText(GetQualityLabel(i));
+}
+
+void EditAudioProfile::on_flacCompressionLevel_valueChanged(int value)
+{
+    (void)value;
+    changed();
+}
+
+void EditAudioProfile::on_encodingComboBox_currentIndexChanged(int index)
+{
+    switch (index) {
+    case 0:
+        ui->stackedWidget->setCurrentIndex(0);
+        break;
+    case 1:
+        ui->stackedWidget->setCurrentIndex(1);
+        break;
+    default:
+        break;
+    }
+    changed();
 }

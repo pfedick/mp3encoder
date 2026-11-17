@@ -50,6 +50,8 @@ private:
     void changeEvent(QEvent* event);
 
 private slots:
+    void on_encodingComboBox_currentIndexChanged(int index);
+    void on_flacCompressionLevel_valueChanged(int value);
     void on_ButtonOK_clicked();
     void on_ButtonCancel_clicked();
     void on_radioButtonCBR_toggled(bool v);

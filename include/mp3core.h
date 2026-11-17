@@ -64,6 +64,9 @@ class Config
 public:
     class Audio
     {
+    private:
+        void loadMp3(QSettings& settings);
+
     public:
         enum EncoderMode
         {
@@ -72,6 +75,7 @@ public:
             VBR
         };
         Audio();
+        pplib::AudioInfo::AudioFormat format = pplib::AudioInfo::AudioFormat::MP3;
         int frequency;
         int quality;
         pplib::AudioInfo::ChannelMode channel_mode;
@@ -80,9 +84,14 @@ public:
         int abr_bitrate;
         int vbr_min_bitrate;
         int vbr_max_bitrate;
+
+        // Flac
+        int flac_compression_level = 5;
+
         void load(QSettings& settings);
         void save(QSettings& settings) const;
     };
+
     class PathConfig
     {
     public:

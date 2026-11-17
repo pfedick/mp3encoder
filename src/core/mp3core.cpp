@@ -281,6 +281,10 @@ void CMP3Core::FinishThreads(QTreeWidget* t)
 
 void TranslateEncoding(const Config::Audio& conf, pplib::String& s)
 {
+    if (conf.format == pplib::AudioInfo::AudioFormat::FLAC) {
+        s.setf("CompLevel: %d", conf.flac_compression_level);
+        return;
+    }
     pplib::String s1;
     switch (conf.mode) {
     case Config::Audio::EncoderMode::CBR:

@@ -67,7 +67,11 @@ void PathTreeWidgetItem::render()
 void AudioProfileTreeWidgetItem::render()
 {
     setText(0, name);
-    setText(1, TranslateEncoding(audio));
+    if (audio.format == pplib::AudioInfo::AudioFormat::FLAC)
+        setText(1, "FLAC");
+    else
+        setText(1, "MP3");
+    setText(2, TranslateEncoding(audio));
 }
 
 Setup::Setup(QWidget* parent, CMP3Core* core)
