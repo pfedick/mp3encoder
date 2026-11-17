@@ -282,19 +282,19 @@ void CMP3Core::FinishThreads(QTreeWidget* t)
 void TranslateEncoding(const Config::Audio& conf, pplib::String& s)
 {
     if (conf.format == pplib::AudioInfo::AudioFormat::FLAC) {
-        s.setf("CompLevel: %d", conf.flac_compression_level);
+        s.setf("FLAC, Level: %d", conf.flac_compression_level);
         return;
     }
     pplib::String s1;
     switch (conf.mode) {
     case Config::Audio::EncoderMode::CBR:
-        s.setf("CBR %d, ", conf.cbr_bitrate);
+        s.setf("MP3, CBR %d, ", conf.cbr_bitrate);
         break;
     case Config::Audio::EncoderMode::ABR:
-        s.setf("ABR %d, ", conf.abr_bitrate);
+        s.setf("MP3, ABR %d, ", conf.abr_bitrate);
         break;
     case Config::Audio::EncoderMode::VBR:
-        s.setf("VBR %d-%d, ", conf.vbr_min_bitrate, conf.vbr_max_bitrate);
+        s.setf("MP3, VBR %d-%d, ", conf.vbr_min_bitrate, conf.vbr_max_bitrate);
         break;
     }
     s.appendf("q%d, ", conf.quality);
@@ -392,7 +392,9 @@ bool CMP3Core::isFileSupported(const pplib::String& filename)
 {
     const int flags = pplib::RegEx::Flags::CASELESS;
     if (pplib::RegEx::match("\\.wav$", filename, flags)) return true;
-    if (pplib::RegEx::match("\\.aif{1,2}$", filename, flags)) return true;
+    if (pplib::RegEx::match("\\.aiff?$", filename, flags)) return true;
+    if (pplib::RegEx::match("\\.flac$", filename, flags)) return true;
+    if (pplib::RegEx::match("\\.ogg$", filename, flags)) return true;
     if (pplib::RegEx::match("\\.mp3$", filename, flags) == true && newconf.recode == true) return true;
     return false;
 }

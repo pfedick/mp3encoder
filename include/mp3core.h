@@ -136,7 +136,8 @@ class CMP3Thread : public pplib::Thread
 {
     // friend class CMP3Core;
 private:
-    pplib::AudioEncoder_MP3 encoder;
+    pplib::AudioEncoder_MP3 mp3_encoder;
+    pplib::AudioEncoder_Flac flac_encoder;
     bool bFileRenamed;
     bool bFinished;
     bool running;
@@ -153,6 +154,11 @@ private:
     float progress, faktor;
     int length;
     int time, rest;
+
+    void initMp3Encoder();
+    void initFlacEncoder();
+    void encodeMp3(pplib::AudioDecoder* decoder, const pplib::AudioInfo& info, const pplib::ID3Tag& Tag);
+    void encodeFlac(pplib::AudioDecoder* decoder, const pplib::AudioInfo& info, const pplib::ID3Tag& Tag);
 
 public:
     CMP3Thread(CMP3Core* core);
@@ -172,7 +178,6 @@ public:
 
     int LockFile();
     virtual void run();
-    void initMp3Encoder(pplib::AudioEncoder_MP3& encoder);
     void encode();
     void updateProgress(int progress);
 };

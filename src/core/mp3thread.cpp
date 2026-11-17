@@ -20,6 +20,7 @@
  */
 
 #include "mp3core.h"
+#include <pplib/core/functions.h>
 
 CMP3Thread::CMP3Thread(CMP3Core* core)
 {
@@ -101,11 +102,14 @@ int CMP3Thread::LockFile()
     //config.List("config");
     //dir.Print();
     const char* myid = core->GetMyId();
-    pplib::String tmpfile, Source, Target;
+    pplib::String tmpfile, Source, Target, Suffix;
     Source = config.Source;
     Target = config.Target;
     Source.trimRight("/");
     Target.trimRight("/");
+
+    Suffix = "mp3";
+    if (config.audio.format == pplib::AudioInfo::AudioFormat::FLAC) Suffix = "flac";
 
     Filename = dir.Filename;
 
@@ -120,8 +124,8 @@ int CMP3Thread::LockFile()
     //printf ("tmpfile: %s\n",(char*)tmpfile);
 
     OriginalFile = dir.File;
-    TargetFile.setf("%s/%s.mp3.%s.tgt.enc", (const char*)Target, (const char*)tmpfile, myid);
-    EndFile.setf("%s/%s.mp3", (const char*)Target, (const char*)tmpfile);
+    TargetFile.setf("%s/%s.%s.%s.tgt.enc", (const char*)Target, (const char*)tmpfile, (const char*)Suffix, myid);
+    EndFile.setf("%s/%s.%s", (const char*)Target, (const char*)tmpfile, (const char*)Suffix);
 
     //printf ("OriginalFile: %ls\n",(const wchar_t*)pplib::WideString(OriginalFile));
     //printf ("EndFile: %ls\n",(const wchar_t*)pplib::WideString(EndFile));
@@ -152,7 +156,11 @@ int CMP3Thread::LockFile()
 
 void CMP3Thread::stopEncode()
 {
-    encoder.stopEncoder();
+    if (config.audio.format == pplib::AudioInfo::AudioFormat::FLAC) {
+        flac_encoder.stopEncoder();
+    } else {
+        mp3_encoder.stopEncoder();
+    }
 }
 
 void CMP3Thread::run()
@@ -202,17 +210,23 @@ static void progressPPL7Encoder(int progress, void* priv)
     ((CMP3Thread*)priv)->updateProgress(progress);
 }
 
-void CMP3Thread::initMp3Encoder(pplib::AudioEncoder_MP3& encoder)
+void CMP3Thread::initMp3Encoder()
 {
-    encoder.setProgressFunction(progressPPL7Encoder, this);
-    encoder.setStereoMode(config.audio.channel_mode);
+    mp3_encoder.setProgressFunction(progressPPL7Encoder, this);
+    mp3_encoder.setStereoMode(config.audio.channel_mode);
     if (config.audio.mode == Config::Audio::EncoderMode::VBR) {
-        encoder.setVBR(config.audio.vbr_min_bitrate, config.audio.vbr_max_bitrate, config.audio.quality);
+        mp3_encoder.setVBR(config.audio.vbr_min_bitrate, config.audio.vbr_max_bitrate, config.audio.quality);
     } else if (config.audio.mode == Config::Audio::EncoderMode::ABR) {
-        encoder.setABR(config.audio.abr_bitrate, config.audio.quality);
+        mp3_encoder.setABR(config.audio.abr_bitrate, config.audio.quality);
     } else {
-        encoder.setCBR(config.audio.cbr_bitrate, config.audio.quality);
+        mp3_encoder.setCBR(config.audio.cbr_bitrate, config.audio.quality);
     }
+}
+
+void CMP3Thread::initFlacEncoder()
+{
+    flac_encoder.setProgressFunction(progressPPL7Encoder, this);
+    flac_encoder.setCompressionLevel(config.audio.flac_compression_level);
 }
 
 pplib::AudioDecoder* CMP3Thread::getDecoder(const pplib::AudioInfo& info)
@@ -223,43 +237,71 @@ pplib::AudioDecoder* CMP3Thread::getDecoder(const pplib::AudioInfo& info)
         return new pplib::AudioDecoder_Wave();
     } else if (info.Format == pplib::AudioInfo::AudioFormat::MP3) {
         return new pplib::AudioDecoder_MP3();
+    } else if (info.Format == pplib::AudioInfo::AudioFormat::FLAC) {
+        return new pplib::AudioDecoder_Flac();
+    } else if (info.Format == pplib::AudioInfo::AudioFormat::OGG) {
+        return new pplib::AudioDecoder_Ogg();
     }
     throw pplib::UnsupportedAudioFormatException();
+}
+
+void CMP3Thread::encodeMp3(pplib::AudioDecoder* decoder, const pplib::AudioInfo& info, const pplib::ID3Tag& Tag)
+{
+    mp3_encoder.startEncode(zz);
+    if (info.HaveID3v2Tag) {
+        mp3_encoder.writeID3v2Tag(Tag);
+    }
+    mp3_encoder.encode(*decoder);
+    mp3_encoder.finish();
+    if (info.HaveID3v2Tag) {
+        try {
+            mp3_encoder.writeID3v1Tag(Tag);
+        }
+        catch (...) {
+        }
+    }
+}
+
+void CMP3Thread::encodeFlac(pplib::AudioDecoder* decoder, const pplib::AudioInfo& info, const pplib::ID3Tag& Tag)
+{
+    flac_encoder.startEncode(zz);
+    if (info.HaveID3v2Tag) {
+        flac_encoder.setVorbisComments(Tag);
+    }
+    flac_encoder.encode(*decoder);
+    flac_encoder.finish();
 }
 
 void CMP3Thread::encode()
 {
     pplib::ID3Tag Tag;
-    initMp3Encoder(encoder);
+    if (config.audio.format == pplib::AudioInfo::AudioFormat::FLAC) {
+        initFlacEncoder();
+    } else {
+        initMp3Encoder();
+    }
     pplib::AudioInfo info;
     if (pplib::IdentAudioFile(ss, info) != true) {
         throw pplib::UnsupportedAudioFormatException();
     }
-    if (info.HaveID3v2Tag) {
-        try {
-            Tag.load(ss);
-        }
-        catch (...) {
-            info.HaveID3v2Tag = false;
-        }
+    pplib::PrintDebug("Loading ID3v2 tag from file: %s", ss.filename().c_str());
+    if (Tag.tryLoad(ss)) {
+        pplib::PrintDebug("ID3v2 tag loaded successfully");
+        Tag.listFrames();
+        info.HaveID3v2Tag = true;
+    } else {
+        pplib::PrintDebug("ID3v2 tag not found");
+        info.HaveID3v2Tag = false;
     }
     pplib::AudioDecoder* decoder = getDecoder(info);
     try {
         length = info.Length / 1000;
         startTime = pplib::GetMicrotime();
         decoder->open(ss);
-        encoder.startEncode(zz);
-        if (info.HaveID3v2Tag) {
-            encoder.writeID3v2Tag(Tag);
-        }
-        encoder.encode(*decoder);
-        encoder.finish();
-        if (info.HaveID3v2Tag) {
-            try {
-                encoder.writeID3v1Tag(Tag);
-            }
-            catch (...) {
-            }
+        if (config.audio.format == pplib::AudioInfo::AudioFormat::FLAC) {
+            encodeFlac(decoder, info, Tag);
+        } else {
+            encodeMp3(decoder, info, Tag);
         }
     }
     catch (...) {
