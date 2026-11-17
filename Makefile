@@ -79,15 +79,16 @@ ASAN_LOG := build/asan/sanitizer.log
 
 .PHONY: all release debug asan build_asan run run-debug run-asan configure translations windeploy clean help
 
-all: release debug
+all: release
 
 configure:
 	$(CMAKE) -S . -B $(BUILD_RELEASE) $(GEN_FLAG) -DCMAKE_BUILD_TYPE=Release
 
 release:
 	$(CMAKE) -S . -B $(BUILD_RELEASE) $(GEN_FLAG) -DCMAKE_BUILD_TYPE=Release
-	$(CMAKE) --build $(BUILD_RELEASE) -j $(JOBS)
+	$(CMAKE) --build $(BUILD_RELEASE) -j $(JOBS) -v
 	-ln -sf $(BUILD_RELEASE)/compile_commands.json compile_commands.json
+	cp $(APP_RELEASE) .
 
 debug:
 	$(CMAKE) -S . -B $(BUILD_DEBUG) $(GEN_FLAG) -DCMAKE_BUILD_TYPE=Debug

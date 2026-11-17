@@ -61,34 +61,17 @@ if(NOT TARGET pplib::audio)
     message(FATAL_ERROR "pplib8 gefunden, aber das Target pplib::audio fehlt. Installation der Audio-Module pruefen.")
 endif()
 
-set(MP3ENC_SOURCES
-    src/core/main.cpp
-    src/core/config.cpp
-    src/core/mp3core.cpp
-    src/core/mp3thread.cpp
-    src/forms/setup/setup.cpp
-    src/forms/mp3encode/mp3encode.cpp
-    src/forms/editpath/editpath.cpp
-    src/forms/editaudioprofile/editaudioprofile.cpp
-    src/forms/editid3tag/editid3tag.cpp
+file(GLOB_RECURSE MP3ENC_SOURCES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
-set(MP3ENC_HEADERS
-    include/mp3core.h
-    include/version.h
-    src/forms/setup/setup.h
-    src/forms/mp3encode/mp3encode.h
-    src/forms/editpath/editpath.h
-    src/forms/editaudioprofile/editaudioprofile.h
-    src/forms/editid3tag/editid3tag.h
+file(GLOB_RECURSE MP3ENC_HEADERS CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
 )
 
-set(MP3ENC_FORMS
-    src/forms/setup/setup.ui
-    src/forms/mp3encode/mp3encode.ui
-    src/forms/editpath/editpath.ui
-    src/forms/editaudioprofile/editaudioprofile.ui
-    src/forms/editid3tag/editid3tag.ui
+file(GLOB_RECURSE MP3ENC_FORMS CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.ui"
 )
 
 set(MP3ENC_WINDOWS_RES "")
@@ -98,13 +81,12 @@ endif()
 
 # AUTOUIC findet die generierten ui_*.h nicht automatisch in den Unterordnern
 # der .ui-Dateien, daher die Suchpfade vor dem Target setzen.
-set(AUTOUIC_SEARCH_PATHS
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/forms/setup"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/forms/mp3encode"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/forms/editpath"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/forms/editaudioprofile"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/forms/editid3tag"
-)
+set(CMAKE_AUTOUIC_SEARCH_PATHS "")
+foreach(ui_file IN LISTS MP3ENC_FORMS)
+    get_filename_component(ui_dir "${ui_file}" DIRECTORY)
+    list(APPEND CMAKE_AUTOUIC_SEARCH_PATHS "${ui_dir}")
+endforeach()
+list(REMOVE_DUPLICATES CMAKE_AUTOUIC_SEARCH_PATHS)
 
 add_executable(mp3encode
     ${MP3ENC_SOURCES}
