@@ -40,6 +40,11 @@
 # Windows (MSYS2/MinGW64): in einer "MSYS2 MinGW x64"-Shell aufrufen, dort
 # make und vorzugsweise ninja installieren.
 ###############################################################################
+VERSION = 2.0.0
+BUILD_NUMBER := $(shell git rev-list --all --count)
+BUILDDATE := $(shell date '+%Y%m%d')
+
+
 
 CMAKE ?= cmake
 
@@ -84,13 +89,24 @@ all: release
 configure:
 	$(CMAKE) -S . -B $(BUILD_RELEASE) $(GEN_FLAG) -DCMAKE_BUILD_TYPE=Release
 
-release:
+update_version:
+	@mkdir -p tmp
+	@echo "#ifndef INCLUDE_VERSION_H_" > tmp/version.h
+	@echo "#define INCLUDE_VERSION_H_" >> tmp/version.h
+	@echo "#define MP3ENCODE_VERSION \"$(VERSION)\"" >> tmp/version.h
+	@echo "#define MP3ENCODE_BUILD_NUMBER \"$(BUILD_NUMBER)\"" >> tmp/version.h
+	@echo "#define MP3ENCODE_RELEASEDATE $(BUILDDATE)" >> tmp/version.h
+	@echo "#endif" >> tmp/version.h
+	@diff tmp/version.h include/version.h > /dev/null 2>&1; if [ $$? -ne 0 ] ; then cp tmp/version.h include/version.h; fi
+
+
+release: update_version
 	$(CMAKE) -S . -B $(BUILD_RELEASE) $(GEN_FLAG) -DCMAKE_BUILD_TYPE=Release
 	$(CMAKE) --build $(BUILD_RELEASE) -j $(JOBS) -v
 	-ln -sf $(BUILD_RELEASE)/compile_commands.json compile_commands.json
 	cp $(APP_RELEASE) .
 
-debug:
+debug: update_version
 	$(CMAKE) -S . -B $(BUILD_DEBUG) $(GEN_FLAG) -DCMAKE_BUILD_TYPE=Debug
 	$(CMAKE) --build $(BUILD_DEBUG) -j $(JOBS)
 	-ln -sf $(BUILD_DEBUG)/compile_commands.json compile_commands.json

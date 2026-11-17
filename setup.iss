@@ -1,13 +1,9 @@
-;/*
+;/*******************************************************************************
 ; * This file is part of MP3Encoder by Patrick Fedick
-; *
-; * $Author: patrick $
-; * $Revision: 1.3 $
-; * $Date: 2009/08/24 22:49:39 $
-; * $Id: setup.iss,v 1.3 2009/08/24 22:49:39 patrick Exp $
-; *
-; *
-; * Copyright (c) 2009 Patrick Fedick
+; * Web: https://github.com/pfedick/mp3encoder
+; *******************************************************************************
+; * Copyright (c) 2026, Patrick Fedick <patrick@pfp.de>
+; * All rights reserved.
 ; *
 ; * This program is free software: you can redistribute it and/or modify
 ; * it under the terms of the GNU General Public License as published by
@@ -30,9 +26,9 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{638EF93F-6684-4862-A922-095F672C0AD6}}
 AppName=PFP MP3Encoder
-AppVerName=PFP MP3Encoder 1.5.0
-AppCopyright=Copyright (C) 2018 Patrick Fedick
-AppVersion=1.3.0
+AppVerName=PFP MP3Encoder 2.0.0
+AppCopyright=Copyright (C) 2026 Patrick Fedick
+AppVersion=2.0.0
 AppPublisher=Patrick F.-Productions
 AppPublisherURL=http://www.pfp.de/
 AppSupportURL=http://www.pfp.de/
