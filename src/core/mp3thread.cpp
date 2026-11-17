@@ -284,13 +284,9 @@ void CMP3Thread::encode()
     if (pplib::IdentAudioFile(ss, info) != true) {
         throw pplib::UnsupportedAudioFormatException();
     }
-    pplib::PrintDebug("Loading ID3v2 tag from file: %s", ss.filename().c_str());
     if (Tag.tryLoad(ss)) {
-        pplib::PrintDebug("ID3v2 tag loaded successfully");
-        Tag.listFrames();
         info.HaveID3v2Tag = true;
     } else {
-        pplib::PrintDebug("ID3v2 tag not found");
         info.HaveID3v2Tag = false;
     }
     pplib::AudioDecoder* decoder = getDecoder(info);
