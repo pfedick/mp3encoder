@@ -189,6 +189,14 @@ void mp3encode::on_clearButton_clicked()
     ui.Done->clear();
 }
 
+void mp3encode::on_deleteQueueButton_clicked()
+{
+    QList<QTreeWidgetItem*> selectedItems = ui.QueueTreeWidget->selectedItems();
+    for (QTreeWidgetItem* item : selectedItems) {
+        delete ui.QueueTreeWidget->takeTopLevelItem(ui.QueueTreeWidget->indexOfTopLevelItem(item));
+    }
+}
+
 void mp3encode::on_audioProfileComboBox_currentIndexChanged(int)
 {
     core->newconf.setCurrentProfile(ui.audioProfileComboBox->currentText());

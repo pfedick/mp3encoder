@@ -66,6 +66,7 @@ private slots:
     void on_clearButton_clicked();
     void on_id3tagEditorButton_clicked();
     void on_audioProfileComboBox_currentIndexChanged(int index);
+    void on_deleteQueueButton_clicked();
     void timerupdate();
 };
 
