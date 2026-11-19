@@ -69,6 +69,8 @@ void AudioProfileTreeWidgetItem::render()
     setText(0, name);
     if (audio.format == pplib::AudioInfo::AudioFormat::FLAC)
         setText(1, "FLAC");
+    else if (audio.format == pplib::AudioInfo::AudioFormat::AIFF)
+        setText(1, "AIFF");
     else
         setText(1, "MP3");
     setText(2, TranslateEncoding(audio));

@@ -284,6 +284,9 @@ void TranslateEncoding(const Config::Audio& conf, pplib::String& s)
     if (conf.format == pplib::AudioInfo::AudioFormat::FLAC) {
         s.setf("FLAC, Level: %d", conf.flac_compression_level);
         return;
+    } else if (conf.format == pplib::AudioInfo::AudioFormat::AIFF) {
+        s.set("AIFF, uncompressed");
+        return;
     }
     pplib::String s1;
     switch (conf.mode) {

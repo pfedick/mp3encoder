@@ -52,8 +52,21 @@ void EditAudioProfile::changeEvent(QEvent* event)
 void EditAudioProfile::setConfig(const pplib::String& name, const Config::Audio& audio)
 {
     ui->name->setText(name);
-    ui->encodingComboBox->setCurrentIndex(audio.format == pplib::AudioInfo::AudioFormat::FLAC ? 1 : 0);
-    ui->stackedWidget->setCurrentIndex(audio.format == pplib::AudioInfo::AudioFormat::FLAC ? 1 : 0);
+    switch (audio.format) {
+    case pplib::AudioInfo::AudioFormat::FLAC:
+        ui->encodingComboBox->setCurrentIndex(1);
+        ui->stackedWidget->setCurrentIndex(1);
+        break;
+    case pplib::AudioInfo::AudioFormat::AIFF:
+        ui->encodingComboBox->setCurrentIndex(2);
+        ui->stackedWidget->setCurrentIndex(2);
+        break;
+    case pplib::AudioInfo::AudioFormat::MP3:
+    default:
+        ui->encodingComboBox->setCurrentIndex(0);
+        ui->stackedWidget->setCurrentIndex(0);
+        break;
+    }
     // Frequency
     switch (audio.frequency) {
     case 32000:
@@ -121,12 +134,13 @@ Config::Audio EditAudioProfile::getConfig() const
 {
     Config::Audio audio;
     switch (ui->encodingComboBox->currentIndex()) {
-    case 0:
-        audio.format = pplib::AudioInfo::AudioFormat::MP3;
+    case 2:
+        audio.format = pplib::AudioInfo::AudioFormat::AIFF;
         break;
     case 1:
         audio.format = pplib::AudioInfo::AudioFormat::FLAC;
         break;
+    case 0:
     default:
         audio.format = pplib::AudioInfo::AudioFormat::MP3;
         break;
@@ -279,6 +293,10 @@ void EditAudioProfile::on_encodingComboBox_currentIndexChanged(int index)
     case 1:
         ui->stackedWidget->setCurrentIndex(1);
         break;
+    case 2:
+        ui->stackedWidget->setCurrentIndex(2);
+        break;
+
     default:
         break;
     }

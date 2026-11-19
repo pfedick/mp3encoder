@@ -138,6 +138,7 @@ class CMP3Thread : public pplib::Thread
 private:
     pplib::AudioEncoder_MP3 mp3_encoder;
     pplib::AudioEncoder_Flac flac_encoder;
+    pplib::AudioEncoder_Aiff aiff_encoder;
     bool bFileRenamed;
     bool bFinished;
     bool running;
@@ -155,10 +156,9 @@ private:
     int length;
     int time, rest;
 
-    void initMp3Encoder();
-    void initFlacEncoder();
     void encodeMp3(pplib::AudioDecoder* decoder, const pplib::AudioInfo& info, const pplib::ID3Tag& Tag);
     void encodeFlac(pplib::AudioDecoder* decoder, const pplib::AudioInfo& info, const pplib::ID3Tag& Tag);
+    void encodeAiff(pplib::AudioDecoder* decoder, const pplib::AudioInfo& info, const pplib::ID3Tag& Tag);
 
 public:
     CMP3Thread(CMP3Core* core);

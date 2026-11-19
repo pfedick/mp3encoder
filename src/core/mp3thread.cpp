@@ -110,6 +110,7 @@ int CMP3Thread::LockFile()
 
     Suffix = "mp3";
     if (config.audio.format == pplib::AudioInfo::AudioFormat::FLAC) Suffix = "flac";
+    if (config.audio.format == pplib::AudioInfo::AudioFormat::AIFF) Suffix = "aiff";
 
     Filename = dir.Filename;
 
@@ -158,6 +159,8 @@ void CMP3Thread::stopEncode()
 {
     if (config.audio.format == pplib::AudioInfo::AudioFormat::FLAC) {
         flac_encoder.stopEncoder();
+    } else if (config.audio.format == pplib::AudioInfo::AudioFormat::AIFF) {
+        aiff_encoder.stopEncoder();
     } else {
         mp3_encoder.stopEncoder();
     }
@@ -210,25 +213,6 @@ static void progressPPL7Encoder(int progress, void* priv)
     ((CMP3Thread*)priv)->updateProgress(progress);
 }
 
-void CMP3Thread::initMp3Encoder()
-{
-    mp3_encoder.setProgressFunction(progressPPL7Encoder, this);
-    mp3_encoder.setStereoMode(config.audio.channel_mode);
-    if (config.audio.mode == Config::Audio::EncoderMode::VBR) {
-        mp3_encoder.setVBR(config.audio.vbr_min_bitrate, config.audio.vbr_max_bitrate, config.audio.quality);
-    } else if (config.audio.mode == Config::Audio::EncoderMode::ABR) {
-        mp3_encoder.setABR(config.audio.abr_bitrate, config.audio.quality);
-    } else {
-        mp3_encoder.setCBR(config.audio.cbr_bitrate, config.audio.quality);
-    }
-}
-
-void CMP3Thread::initFlacEncoder()
-{
-    flac_encoder.setProgressFunction(progressPPL7Encoder, this);
-    flac_encoder.setCompressionLevel(config.audio.flac_compression_level);
-}
-
 pplib::AudioDecoder* CMP3Thread::getDecoder(const pplib::AudioInfo& info)
 {
     if (info.Format == pplib::AudioInfo::AudioFormat::AIFF) {
@@ -247,6 +231,15 @@ pplib::AudioDecoder* CMP3Thread::getDecoder(const pplib::AudioInfo& info)
 
 void CMP3Thread::encodeMp3(pplib::AudioDecoder* decoder, const pplib::AudioInfo& info, const pplib::ID3Tag& Tag)
 {
+    mp3_encoder.setProgressFunction(progressPPL7Encoder, this);
+    mp3_encoder.setStereoMode(config.audio.channel_mode);
+    if (config.audio.mode == Config::Audio::EncoderMode::VBR) {
+        mp3_encoder.setVBR(config.audio.vbr_min_bitrate, config.audio.vbr_max_bitrate, config.audio.quality);
+    } else if (config.audio.mode == Config::Audio::EncoderMode::ABR) {
+        mp3_encoder.setABR(config.audio.abr_bitrate, config.audio.quality);
+    } else {
+        mp3_encoder.setCBR(config.audio.cbr_bitrate, config.audio.quality);
+    }
     mp3_encoder.startEncode(zz);
     if (info.HaveID3v2Tag) {
         mp3_encoder.writeID3v2Tag(Tag);
@@ -264,6 +257,8 @@ void CMP3Thread::encodeMp3(pplib::AudioDecoder* decoder, const pplib::AudioInfo&
 
 void CMP3Thread::encodeFlac(pplib::AudioDecoder* decoder, const pplib::AudioInfo& info, const pplib::ID3Tag& Tag)
 {
+    flac_encoder.setProgressFunction(progressPPL7Encoder, this);
+    flac_encoder.setCompressionLevel(config.audio.flac_compression_level);
     flac_encoder.startEncode(zz);
     if (info.HaveID3v2Tag) {
         flac_encoder.setVorbisComments(Tag);
@@ -272,13 +267,23 @@ void CMP3Thread::encodeFlac(pplib::AudioDecoder* decoder, const pplib::AudioInfo
     flac_encoder.finish();
 }
 
+void CMP3Thread::encodeAiff(pplib::AudioDecoder* decoder, const pplib::AudioInfo& info, const pplib::ID3Tag& Tag)
+{
+    aiff_encoder.setProgressFunction(progressPPL7Encoder, this);
+    aiff_encoder.startEncode(zz);
+    if (info.HaveID3v2Tag) {
+        aiff_encoder.writeID3v2Tag(Tag);
+    }
+    aiff_encoder.encode(*decoder);
+    aiff_encoder.finish();
+}
+
 void CMP3Thread::encode()
 {
     pplib::ID3Tag Tag;
-    if (config.audio.format == pplib::AudioInfo::AudioFormat::FLAC) {
-        initFlacEncoder();
-    } else {
-        initMp3Encoder();
+    if (config.audio.format != pplib::AudioInfo::AudioFormat::FLAC && config.audio.format != pplib::AudioInfo::AudioFormat::AIFF &&
+        config.audio.format != pplib::AudioInfo::AudioFormat::MP3) {
+        throw pplib::UnsupportedAudioFormatException();
     }
     pplib::AudioInfo info;
     if (pplib::IdentAudioFile(ss, info) != true) {
@@ -296,6 +301,8 @@ void CMP3Thread::encode()
         decoder->open(ss);
         if (config.audio.format == pplib::AudioInfo::AudioFormat::FLAC) {
             encodeFlac(decoder, info, Tag);
+        } else if (config.audio.format == pplib::AudioInfo::AudioFormat::AIFF) {
+            encodeAiff(decoder, info, Tag);
         } else {
             encodeMp3(decoder, info, Tag);
         }
