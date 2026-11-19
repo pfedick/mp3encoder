@@ -1,5 +1,14 @@
 Patrick F.-Productions - MP3-Encoder
 ====================================
+Version 2.0.0
+  - Added Support for Wav, Ogg and Flac files for decoding
+  - Added support for AIFF and Flac Files for encoding
+  - updated from ppl7 to pplib8
+  - switched build system to CMake.
+    Expects that pplib8 is installed and is compiled with flac, mp3 and ogg support
+
+Version 1.6.0
+  - Updated from ppl6 to ppl7
 
 Version 1.5.0 vom 30.10.2020 (Tag: REL_1_5_0)
   - Fixed Encoding of Files with non US-ASCII characters in filename
